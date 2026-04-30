@@ -1,28 +1,64 @@
 @import "tailwindcss";
 
-:root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
+@theme {
+  --color-primary-50: var(--color-cyan-50);
+  --color-primary-100: var(--color-cyan-100);
+  --color-primary-500: var(--color-cyan-500);
+  --color-primary-600: var(--color-cyan-600);
+  --color-primary-700: var(--color-cyan-700);
+  --color-primary-800: var(--color-cyan-800);
+  --color-primary-900: var(--color-cyan-900);
 
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+  --color-surface: #f8fafc;
+  --color-content-main: #0f172a;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  --radius-xl: 1rem;
 }
 
-a {
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 px-6 py-3 
+           bg-primary-700 text-white font-bold text-sm uppercase tracking-widest 
+           rounded-xl shadow-lg shadow-cyan-200/50 transition-all duration-200
+           hover:bg-primary-800 hover:shadow-cyan-300/50 hover:-translate-y-0.5
+           active:scale-95 active:translate-y-0
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-slate-300 rounded-xl 
+           text-slate-900 placeholder-slate-400 outline-none transition-all
+           focus:border-cyan-600 focus:ring-4 focus:ring-cyan-500/10;
+  }
+
+  .error-text {
+    @apply text-red-500 text-[12px] font-medium mt-1 ml-1 block italic ml-3;
+  }
+}
+
+/*a {
     font-weight: 500;
     color: #646cff;
     text-decoration: inherit;
 }
 a:hover {
     color: #535bf2;
-}
+}*/
 
 /*body {
     margin: 0;
@@ -32,7 +68,7 @@ a:hover {
     min-height: 100vh;
 }*/
 
-h1 {
+/*h1 {
     font-size: 3.2em;
     line-height: 1.1;
 }
@@ -54,9 +90,9 @@ button:hover {
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
-}
+}*/
 
-@media (prefers-color-scheme: light) {
+/*@media (prefers-color-scheme: light) {
     :root {
         color: #213547;
         background-color: #ffffff;
@@ -67,4 +103,4 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
-}
+}*/
