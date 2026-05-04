@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Building2, ArrowRight, LogOut, Search } from "lucide-react";
 
 // Mock Data: ब्याकेन्डबाट यस्तै डेटा आउँछ
 const businesses = [
   {
     id: "1",
-    name: "Swift POS - Main Branch",
+    name: "Nodal POS - Main Branch",
     role: "Admin",
     location: "Folkestone",
   },
@@ -15,6 +15,8 @@ const businesses = [
 
 const BusinessLogin = () => {
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {});
 
   const handleSelect = (id: string) => {
     console.log("Selected Business ID:", id);
@@ -87,7 +89,7 @@ const BusinessLogin = () => {
               <LogOut className="size-4 mr-2" />
               Switch Account
             </button>
-            <p className="text-xs text-gray-400">Swift POS v1.0</p>
+            <p className="text-xs text-gray-400">Nodal POS v1.0</p>
           </div>
         </div>
       </div>

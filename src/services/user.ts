@@ -32,3 +32,23 @@ export const getAuthUser = async () => {
     throw new Error("An unexpected error occurred");
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    const response = await apiInstance.post("/auth/logout");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const loginUserWithBusiness = async (businessId: string) => {
+  try {
+    const response = await apiInstance.post("/auth/loginWithBusiness", {
+      businessId,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

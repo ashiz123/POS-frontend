@@ -2,17 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { registerValidation } from "../../validations/registerValidations";
 import { registerUser } from "../../services/user";
+import { type RegisterData } from "../../validations/registerValidations";
+import { ValidationError } from "../../components/Message";
 
 const RegisterUser = () => {
-  const { formData, setFormData, errors, handleChange, handleSubmit } = useForm(
-    {
-      name: "",
-      phone: "",
-      email: "",
-      password: "",
-    },
-    registerValidation,
-  );
+  const { formData, setFormData, errors, handleChange, handleSubmit } =
+    useForm<RegisterData>(
+      {
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+      },
+      registerValidation,
+    );
   const navigate = useNavigate();
 
   const formSubmit = async (request) => {
@@ -44,7 +47,7 @@ const RegisterUser = () => {
             Create your account
           </h1>
           <p className="text-slate-500 text-sm mt-2">
-            Start managing your business with Swift POS
+            Start managing your business with Nodal POS
           </p>
         </div>
 
@@ -68,7 +71,7 @@ const RegisterUser = () => {
                   value={formData.name}
                 />
                 {errors.name && (
-                  <span className="error-text">{errors.name}</span>
+                  <ValidationError> {errors.name}</ValidationError>
                 )}
               </div>
             </div>
@@ -136,7 +139,7 @@ const RegisterUser = () => {
 
           <div className="mt-8 text-center border-t border-slate-100 pt-6">
             <p className="text-sm text-slate-500">
-              Already using Swift?{" "}
+              Already using Nodal?{" "}
               <Link
                 to="/"
                 className="font-bold text-cyan-700 hover:text-cyan-800 transition-colors"

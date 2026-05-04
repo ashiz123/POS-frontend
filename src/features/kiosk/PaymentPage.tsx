@@ -102,7 +102,7 @@ const PaymentPage = () => {
         {/* Footer Info */}
         <div className="bg-slate-50 px-8 py-4 text-center">
           <p className="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">
-            Transaction Secured by Swift Pay • Terminal ID: #01-FOLKESTONE
+            Transaction Secured by Nodal Pay • Terminal ID: #01-FOLKESTONE
           </p>
         </div>
       </div>

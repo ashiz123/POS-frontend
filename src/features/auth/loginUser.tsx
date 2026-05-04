@@ -1,5 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { loginValidation } from "../../validations/loginValidations";
+import {
+  loginValidation,
+  type LoginData,
+} from "../../validations/loginValidations";
 import useForm from "../../hooks/useForm";
 import { loginUser } from "../../services/user";
 import { useAuth } from "../../hooks/useAuth";
@@ -12,7 +15,7 @@ const LoginUser = () => {
     setErrors,
     handleChange,
     handleSubmit,
-  } = useForm(
+  } = useForm<LoginData>(
     {
       email: "",
       password: "",
@@ -27,12 +30,10 @@ const LoginUser = () => {
       const result = await loginUser(request.data);
       const loggedInUser = result.user;
 
-      console.log("Login successful!", loggedInUser);
-
       if (loggedInUser) {
         setUser(loggedInUser);
         setFormData({ email: "", password: "" });
-        navigate("/business/profile", { replace: true });
+        navigate("/business/select", { replace: true });
       } else {
         setErrors({ root: "Invalid user data received" });
       }
@@ -81,7 +82,7 @@ const LoginUser = () => {
             type="submit"
             className="btn-primary w-full py-4 shadow-lg shadow-cyan-100 "
           >
-            Login
+            LOGIN
           </button>
         </form>
       </div>

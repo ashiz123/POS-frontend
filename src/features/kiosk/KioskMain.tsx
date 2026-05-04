@@ -56,7 +56,7 @@ const KioskMain = () => {
           <div className="w-8 h-8 bg-cyan-700 rounded flex items-center justify-center">
             <span className="text-white font-bold italic">S</span>
           </div>
-          <h1 className="text-xl tracking-tighter">SWIFT KIOSK</h1>
+          <h1 className="text-xl tracking-tighter">Nodal KIOSK</h1>
         </div>
         <Link
           to="/"

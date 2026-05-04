@@ -1,30 +1,21 @@
-import { useEffect, useState } from "react";
-import apiInstance from "../../services/api";
+import { useAuth } from "../../hooks/useAuth";
 
 const ProfilePage = () => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
+  const { user, loading, error } = useAuth();
 
-  useEffect(() => {
-    apiInstance
-      .get("/auth/authUser")
-      .then((res) => {
-        console.log("Profile Data:", res.data);
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.error("Auth Failed:", err.response?.data);
-        setError("Unauthorized - No valid cookie found!");
-      });
-  }, []);
+  if (loading) return <div>Loading...</div>;
 
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
-  if (!data) return <div>Loading profile...</div>;
+  if (error) {
+    return <div style={{ color: "red" }}>{error}</div>;
+  }
+
+  if (!user)
+    return <div style={{ color: "red" }}>Unauthorized - Please login.</div>;
 
   return (
     <div>
       <h1>User Profile</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
 };

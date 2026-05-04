@@ -1,10 +1,9 @@
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate, Outlet } from "react-router-dom";
 
+// this allow to create the business
 const ProtectedRoute = () => {
   const { user, loading, error } = useAuth();
-
-  console.log(user);
 
   if (loading) return <div>Loading session...</div>;
   if (error)

@@ -8,11 +8,11 @@ const LandingPage = () => {
       <div className="mb-12 flex flex-col items-center">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-linear-to-br from-cyan-600 to-slate-700 rounded-lg flex items-center justify-center shadow-md">
-            <span className="text-white text-3xl font-bold italic">S</span>
+            <span className="text-white text-3xl font-bold italic">N</span>
           </div>
           <div className="text-center md:text-left">
             <h1 className="text-3xl font-extrabold tracking-widest text-slate-900 leading-none">
-              SWIFT POS
+              Nodal POS
             </h1>
             <p className="text-sm tracking-[0.3em] font-light text-slate-500 uppercase mt-1">
               Solutions
@@ -30,7 +30,7 @@ const LandingPage = () => {
       </div>
 
       <footer className="mt-12 text-[10px] font-medium text-slate-400 uppercase tracking-widest">
-        Version 1.0.1 (c) 2026 Swift POS
+        Version 1.0.1 (c) 2026 Nodal POS
       </footer>
     </div>
   );
