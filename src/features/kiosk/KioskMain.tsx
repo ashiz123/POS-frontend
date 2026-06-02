@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useKioskDevice } from "../../hooks/useKioskDevice";
+import { useKioskUser } from "../../hooks/useKioskAuth";
 
 const KioskMain = () => {
-  // Mock data for your testing - eventually this comes from your Node.js backend
+  const { terminal } = useKioskDevice();
+  const { businessId, terminalSessionId, user } = useKioskUser();
+  const navigate = useNavigate();
+
+  console.log("terminal", terminal);
+  console.log("user", user);
+  console.log("business", businessId);
+  console.log("terminalSessionId", terminalSessionId);
+
   const categories = [
     "All",
     "Apparel",

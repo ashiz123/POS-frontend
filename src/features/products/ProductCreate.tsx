@@ -1,9 +1,52 @@
 import { Link } from "react-router-dom";
 import Master from "../../components/Master";
 import { useGetCategories } from "../../hooks/useGetCategories";
+import useForm from "../../hooks/useForm";
+import {
+  ProductValidation,
+  type ProductData,
+} from "../../validations/productValidation";
+import { createProduct } from "../../services/product";
+import { ValidationError } from "../../components/Message";
 
 const ProductCreate = () => {
+  const {
+    formData,
+    setFormData,
+    errors,
+    setErrors,
+    handleChange,
+    handleSubmit,
+  } = useForm<ProductData>(
+    {
+      name: "",
+      description: "",
+      categoryId: "",
+      slug: "",
+      stockType: "stocked",
+      isActive: true,
+    },
+    ProductValidation,
+  );
   const { categories, loading } = useGetCategories();
+
+  const submitForm = async (request) => {
+    try {
+      const response = await createProduct(request.data);
+      if (response) {
+        setFormData({
+          name: "",
+          description: "",
+          categoryId: "",
+          slug: "",
+          stockType: "stocked",
+          isActive: true,
+        });
+      }
+    } catch (error: any) {
+      console.log("error", error);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -22,7 +65,10 @@ const ProductCreate = () => {
 
           {/* Card Container - Matching rounded-3xl and shadows */}
           <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl shadow-slate-200/50">
-            <form className="space-y-5">
+            <form
+              className="space-y-5"
+              onSubmit={(e) => handleSubmit(e, submitForm)}
+            >
               {/* Product Name */}
               <div className="space-y-1">
                 <label
@@ -37,25 +83,28 @@ const ProductCreate = () => {
                   type="text"
                   placeholder="Product name"
                   className="input-field" // Using your global class
-                  // onChange={handleChange}
-                  // value={formData.name}
+                  onChange={handleChange}
+                  value={formData.name}
                 />
+                {errors.name && (
+                  <ValidationError> {errors.name}</ValidationError>
+                )}
               </div>
               <div className="space-y-1">
                 <label
                   htmlFor="name"
                   className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1"
                 >
-                  Product Name
+                  Description
                 </label>
                 <textarea
-                  id="name"
+                  id="description"
                   rows={3}
                   name="description"
                   placeholder="Product Description"
                   className="input-field" // Using your global class
-                  // onChange={handleChange}
-                  // value={formData.name}
+                  onChange={handleChange}
+                  value={formData.description}
                 />
               </div>
 
@@ -71,16 +120,22 @@ const ProductCreate = () => {
                   <div className="relative group">
                     <select
                       id="category"
-                      name="category"
+                      name="categoryId"
                       className="input-field appearance-none cursor-pointer pr-10"
-                      // onChange={handleChange}
-                      // value={formData.category}
+                      onChange={handleChange}
+                      value={formData.categoryId}
                     >
+                      <option value="" disabled selected>
+                        Select Category
+                      </option>
                       {categories.map((category) => (
                         <option key={category._id} value={category._id}>
                           {category.title}
                         </option>
                       ))}
+                      {errors.categoryId && (
+                        <ValidationError> {errors.categoryId}</ValidationError>
+                      )}
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-focus-within:text-cyan-700">
                       <svg
@@ -103,64 +158,91 @@ const ProductCreate = () => {
                 {/* SKU */}
                 <div className="space-y-1">
                   <label
-                    htmlFor="sku"
+                    htmlFor="slug"
                     className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1"
                   >
-                    SKU / Barcode
+                    Slug
                   </label>
                   <input
-                    id="sku"
-                    name="sku"
+                    id="slug"
+                    name="slug"
                     type="text"
-                    placeholder="Scan or type code"
+                    placeholder="Enter slug for product"
                     className="input-field"
-                    //   onChange={handleChange}
-                    //   value={formData.sku}
+                    onChange={handleChange}
+                    value={formData.slug}
                   />
+                  {errors.slug && (
+                    <ValidationError> {errors.slug}</ValidationError>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Price */}
                 <div className="space-y-1">
                   <label
-                    htmlFor="price"
+                    htmlFor="stockType"
                     className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1"
                   >
-                    Price (GBP)
+                    Stock Type
                   </label>
-                  <input
-                    id="price"
-                    name="price"
-                    type="number"
-                    placeholder="0.00"
-                    className="input-field font-mono"
-                    //   onChange={handleChange}
-                    //   value={formData.price}
-                  />
+                  <div className="relative">
+                    <select
+                      id="stockType"
+                      name="stockType"
+                      className="input-field appearance-none cursor-pointer pr-10"
+                      onChange={handleChange}
+                      value={formData.stockType}
+                    >
+                      <option value="stocked">Stocked (Standard)</option>
+                      <option value="composite">
+                        Composite (Bundle/Recipe)
+                      </option>
+                    </select>
+
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg
+                        className="h-5 w-5 text-gray-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Stock */}
                 <div className="space-y-1">
-                  <label
-                    htmlFor="stock"
-                    className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1"
-                  >
-                    Initial Stock
-                  </label>
-                  <input
-                    id="stock"
-                    name="stock"
-                    type="number"
-                    placeholder="0"
-                    className="input-field font-mono"
-                    //   onChange={handleChange}
-                    //   value={formData.stock}
-                  />
+                  <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-slate-700">
+                        Display on Menu
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        Show on the active selling screen.
+                      </p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        title="Display on menu"
+                        className="sr-only peer"
+                        name="isActive"
+                        onChange={handleChange}
+                        checked={formData.isActive}
+                      />
+
+                      <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                  </div>
                 </div>
               </div>
 
-              {/* Submit Button - Matching btn-primary and shadow-cyan */}
               <div className="pt-4 flex gap-3">
                 <Link
                   to="/products"

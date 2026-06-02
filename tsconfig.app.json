@@ -26,5 +26,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/features/category/.tsx"]
+  "include": [
+    "src",
+    "src/features/category/.tsx",
+    "tests/KioskLogin.test.tsx",
+    "tests/KioskActivation.test.tsx"
+  ]
 }

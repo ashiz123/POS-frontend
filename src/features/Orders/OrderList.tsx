@@ -1,27 +1,24 @@
-import { Link } from "react-router-dom";
-import Master from "../../components/Master";
 import { useEffect, useState } from "react";
-import { productList } from "../../services/product";
-import type { ProductData } from "../../validations/productValidation";
+import Master from "../../components/Master";
+import { getOrderList } from "../../services/order";
 
-const ProductList = () => {
-  const [products, setProducts] = useState<(ProductData & { _id: string })[]>(
-    [],
-  );
+const OrderList = () => {
+  const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
-    const getAllProducts = async () => {
+    const getAllOrders = async () => {
       try {
-        const allProducts = await productList();
-        console.log(allProducts.data);
-        setProducts(allProducts.data);
+        const orders = await getOrderList();
+        setOrderItems(orders.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getAllProducts();
-  }, []);
+    getAllOrders();
+  });
+
+  console.log(orderItems);
 
   return (
     <Master>
@@ -31,17 +28,17 @@ const ProductList = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-primary-600">
-                Products
+                Order Lists
               </h1>
               <p className="text-slate-500 text-sm">
-                Manage your inventory and pricing.
+                All your business orders.
               </p>
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search products..."
+                  placeholder="Search orders..."
                   className="pl-10 pr-4 py-2 border border-slate-200 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none w-64 text-sm"
                 />
                 <svg
@@ -58,12 +55,6 @@ const ProductList = () => {
                   ></path>
                 </svg>
               </div>
-              <Link
-                to="/product/create"
-                className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition shadow-sm"
-              >
-                + Add Product
-              </Link>
             </div>
           </div>
 
@@ -73,7 +64,7 @@ const ProductList = () => {
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Product Name
+                    Order number
                   </th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Slug
@@ -94,38 +85,22 @@ const ProductList = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
-                {products.map((product) => (
-                  <tr
-                    key={product._id}
-                    className="hover:bg-slate-50 transition"
-                  >
-                    <td className="px-6 py-4 font-medium">{product.name}</td>
-                    <td className="px-6 py-4 font-medium">{product.slug}</td>
-                    <td className="px-6 py-4 text-slate-500">
-                      {product.categoryId}
-                    </td>
-                    <td className="px-6 py-4">{product.stockType}</td>
-                    <td className="px-6 py-4">
-                      {product.isActive ? (
-                        <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-bold">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="px-2 py-1 bg-emerald-100 text-red-700-700 rounded-md text-xs font-bold">
-                          Inactive
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="text-primary-600 hover:text-primary-800 font-medium mr-3">
-                        Edit
-                      </button>
-                      <button className="text-red-500 hover:text-red-700 font-medium">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                <tr className="hover:bg-slate-50 transition">
+                  <td className="px-6 py-4 font-medium">testing</td>
+                  <td className="px-6 py-4 font-medium">testing</td>
+                  <td className="px-6 py-4 text-slate-500">testing</td>
+                  <td className="px-6 py-4">testing</td>
+                  <td className="px-6 py-4">Completed</td>
+
+                  <td className="px-6 py-4 text-right">
+                    <button className="text-primary-600 hover:text-primary-800 font-medium mr-3">
+                      Edit
+                    </button>
+                    <button className="text-red-500 hover:text-red-700 font-medium">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -135,4 +110,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default OrderList;

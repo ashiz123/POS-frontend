@@ -1,6 +1,8 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import type { ErrorPageProps } from "../types/ErrorPage";
 
-const NotFound = () => {
+const ErrorPage: React.FC<ErrorPageProps> = ({ title, code, message }) => {
   const navigate = useNavigate();
 
   return (
@@ -17,14 +19,15 @@ const NotFound = () => {
         <div className="bg-white rounded-3xl p-10 border border-slate-200 shadow-xl shadow-slate-200/50 text-center">
           <div className="mb-6">
             <h1 className="text-6xl font-black text-slate-200 tracking-tighter">
-              404
+              {code}
             </h1>
-            <h2 className="text-2xl font-black text-slate-900 mt-2">
-              Page not found
+            <h2 className="text-2xl font-blasck text-slate-900 mt-2">
+              {title}
             </h2>
             <p className="text-slate-500 text-sm mt-3 leading-relaxed">
-              The page you are looking for might have been removed, had its name
-              changed, or is temporarily unavailable.
+              {/* The page you are looking for might have been removed, had its name
+              changed, or is temporarily unavailable. */}
+              {message}
             </p>
           </div>
 
@@ -62,4 +65,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default ErrorPage;

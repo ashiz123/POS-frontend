@@ -24,9 +24,10 @@ export interface BusinessPropsLean {
 const SelectBusiness = () => {
   const navigate = useNavigate();
   const [businesses, setBusinesses] = useState<BusinessPropsLean[] | null>([]);
-  const { setUser, setBusiness, business } = useAuth();
+  const { setUser, setBusiness } = useAuth();
 
   useEffect(() => {
+    //userId is not required to get businesses as businessId is coming through accessToken stored in cookies
     const getBusinesses = async () => {
       try {
         const businesses = await getBusinessOfAuthUser();
@@ -39,18 +40,14 @@ const SelectBusiness = () => {
     getBusinesses();
   }, []);
 
-  //Note: businessId is not required to pass in url.
-  //Doing post method to pass the businessId and it generate the token and store in cookies
-  //Dashboard run the route with WithCredentials:true, to get business detail. and that store the business in context.
-  //When dashboard is loading , user and business detail is available to access the product of business.
   const selectBusiness = async (biz) => {
     try {
       await loginUserWithBusiness(biz._id);
       setBusiness(biz);
-      console.log("business", business);
+
       if (biz) {
         console.log("Navigating with business:", biz._id);
-        navigate("/dashboard");
+        navigate("/business/dashboard");
       }
     } catch (err) {
       console.log(err);
@@ -114,7 +111,7 @@ const SelectBusiness = () => {
 
           {/* Add New Business - Redirects to Register Page */}
           <button
-            onClick={() => navigate("/business/register")}
+            onClick={() => navigate("/business/add")}
             className="flex flex-col items-center justify-center gap-4 bg-slate-100 border-2 border-dashed border-slate-200 rounded-3xl p-6 hover:border-blue-400 hover:bg-blue-50/50 transition-all group"
           >
             <div className="p-4 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">

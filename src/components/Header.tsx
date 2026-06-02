@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, business } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -62,7 +62,7 @@ export const Header = () => {
                 {/* Status indicator */}
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-slate-400">
-                  Administrator
+                  {business?.role}
                 </span>
               </div>
             </div>

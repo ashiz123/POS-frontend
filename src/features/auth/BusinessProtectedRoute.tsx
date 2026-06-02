@@ -2,18 +2,17 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { getBusinessDetail } from "../../services/business";
+import ErrorPage from "../../components/ErrorPage";
 
-const BusinessRoute = () => {
+const BusinessProtectedRoute = () => {
   const { business, error, setBusiness } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getBusiness = async () => {
       try {
-        if (!business) {
-          const businessDetail = await getBusinessDetail();
-          setBusiness(businessDetail.data);
-        }
+        const businessDetail = await getBusinessDetail();
+        setBusiness(businessDetail.data);
       } catch (err) {
         console.log(err);
       } finally {
@@ -23,6 +22,16 @@ const BusinessRoute = () => {
 
     getBusiness();
   }, []);
+
+  if (business?.role === "cashier") {
+    return (
+      <ErrorPage
+        title="Unauthorized"
+        code="401"
+        message="You are not authorized to access this page."
+      />
+    );
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -41,4 +50,4 @@ const BusinessRoute = () => {
   return <Outlet />;
 };
 
-export default BusinessRoute;
+export default BusinessProtectedRoute;

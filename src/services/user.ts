@@ -12,9 +12,9 @@ export const registerUser = async (userData) => {
 export const loginUser = async (userData) => {
   try {
     const response = await apiInstance.post("/auth/login", userData);
-    console.log("response here", response);
     return response.data;
   } catch (error: any) {
+    console.error("error", error.response);
     const message =
       error.response?.data?.error || "An unexpected error occurred";
     console.log("axios error", message);
@@ -22,11 +22,19 @@ export const loginUser = async (userData) => {
   }
 };
 
+export const loginWithOtp = async (otp: string) => {
+  try {
+    const response = await apiInstance.post("/auth/verifyOTP", { otp });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAuthUser = async () => {
   try {
     const response = await apiInstance.get("/auth/authUser");
-    console.log(response);
-    return response.data;
+    return response.data.loggedInUser;
   } catch (error) {
     console.log(error);
     throw new Error("An unexpected error occurred");

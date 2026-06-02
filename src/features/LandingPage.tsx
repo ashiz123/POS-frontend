@@ -1,5 +1,5 @@
-import KioskLogin from "./kiosk/KioskLogin";
 import LoginUser from "./auth/loginUser";
+import KioskPage from "./kiosk/KioskPage";
 
 const LandingPage = () => {
   return (
@@ -26,7 +26,7 @@ const LandingPage = () => {
         <LoginUser />
 
         {/* Customer area */}
-        <KioskLogin />
+        <KioskPage />
       </div>
 
       <footer className="mt-12 text-[10px] font-medium text-slate-400 uppercase tracking-widest">

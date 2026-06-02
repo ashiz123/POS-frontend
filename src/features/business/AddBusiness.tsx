@@ -7,7 +7,7 @@ import {
   type BusinessRegisterData,
 } from "../../validations/registerBusinessValidation";
 
-const BusinessRegister = () => {
+const AddBusiness = () => {
   const navigate = useNavigate();
 
   const { formData, setFormData, errors, handleChange, handleSubmit } =
@@ -145,4 +145,4 @@ const BusinessRegister = () => {
   );
 };
 
-export default BusinessRegister;
+export default AddBusiness;

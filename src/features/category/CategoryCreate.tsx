@@ -10,7 +10,7 @@ import { createCategory } from "../../services/category";
 import { SuccessMessage, ValidationError } from "../../components/Message";
 import { useGetCategories } from "../../hooks/useGetCategories";
 
-const CreateCategory = () => {
+const CategoryCreate = () => {
   const [isMainCategory, setIsMainCategory] = useState(true);
 
   const {
@@ -183,7 +183,12 @@ const CreateCategory = () => {
                       title="Select Parent Category"
                       className="w-full bg-white border border-blue-200 rounded-xl p-4 text-slate-900 focus:ring-2 focus:ring-primary-500 outline-none transition appearance-none"
                       onChange={handleChange}
-                      value={formData.parentCategoryId}
+                      value={
+                        typeof formData.parentCategoryId === "object" &&
+                        formData.parentCategoryId !== null
+                          ? formData.parentCategoryId._id
+                          : (formData.parentCategoryId ?? "")
+                      }
                     >
                       <option value="">Choose a category...</option>
                       {categories.map((category) => (
@@ -232,7 +237,7 @@ const CreateCategory = () => {
                     className="sr-only peer"
                     name="isActive"
                     onChange={handleChange}
-                    defaultChecked
+                    checked={formData.isActive}
                   />
                   <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                 </label>
@@ -263,4 +268,4 @@ const CreateCategory = () => {
   );
 };
 
-export default CreateCategory;
+export default CategoryCreate;

@@ -4,7 +4,7 @@ import { useState } from "react";
 type FormErrors<T> = Partial<Record<keyof T | "root", string>>;
 
 const useForm = <T>(initalFormData, validation) => {
-  const [formData, setFormData] = useState(initalFormData);
+  const [formData, setFormData] = useState<T>(initalFormData);
   const [errors, setErrors] = useState<FormErrors<T>>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
