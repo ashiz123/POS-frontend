@@ -1,16 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import RegisterUser from "../features/auth/RegisterUser";
-import LandingPage from "../features/LandingPage";
+import RegisterUser from "../features/admin/auth/RegisterUser";
 import { AuthProvider } from "../providers/authProvider";
-import KioskActivation from "../features/kiosk/KioskActivation";
+import KioskActivation from "../features/kiosk/auth/KioskActivation";
 import BusinessRoutes from "./BusinessRoutes";
 import CustomerRoutes from "./CustomerRoutes";
 import ErrorPage from "../components/ErrorPage";
+import TerminalSetup from "../ZTerminalImplement/terminalSetup";
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="" element={<LandingPage />} />
       <Route path="/business/user/register" element={<RegisterUser />} />
       <Route path="/customer/kiosk/activate" element={<KioskActivation />} />
 
@@ -25,6 +24,7 @@ const AppRouter = () => {
         }
       />
       <Route path="/customer/*" element={<CustomerRoutes />} />
+      <Route path="/terminal" element={<TerminalSetup />} />
 
       <Route
         path="/*"

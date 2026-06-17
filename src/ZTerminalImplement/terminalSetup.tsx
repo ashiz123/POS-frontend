@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { TerminalComponent } from "./stripe/TerminalComponent";
 import { PaymentCollect } from "./stripe/PaymentCollect";
-import { TerminalProvider } from "./context/TerminalProvider";
+import { TerminalProvider } from "../providers/TerminalProvider";
 import { CreateOrderComponent } from "./order/CreateOrderComponent";
 import LoginTerminalComponent from "./components/LoginTerminal";
 

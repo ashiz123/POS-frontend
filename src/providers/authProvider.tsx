@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { getAuthUser, logoutUser } from "../services/user";
-import { useLocation, useNavigate } from "react-router-dom";
+import { getAuthUser, logoutUser } from "../services/admin/user";
+import { useNavigate } from "react-router-dom";
 import type { EmployeeRole } from "../validations/employeeValidation";
 
 export type UserType = {
@@ -30,22 +30,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
 
-  const publicPaths = ["/", "/auth/register", "/auth/login"];
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const isPublicPage = publicPaths.includes(location.pathname);
+  // if (isPublicPage) {
+  //   console.log("public page");
+  //   return;
+  // }
 
   useEffect(() => {
-    if (isPublicPage) {
-      console.log("public page");
-      return;
-    }
-
-    const checkAuth = async () => {
+    const initializeAuth = async () => {
       try {
-        const user = await getAuthUser();
-        setUser(user);
+        const currentUser = await getAuthUser();
+        setUser(currentUser);
       } catch (err) {
         console.error("Auth provider", err);
         setUser(null);
@@ -53,8 +49,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
       }
     };
-    checkAuth();
-  }, [location.pathname, isPublicPage]);
+    initializeAuth();
+  }, []);
+
+  //  [location.pathname, isPublicPage]
 
   const logout = async () => {
     try {

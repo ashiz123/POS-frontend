@@ -1,9 +1,89 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useKioskDevice } from "../../hooks/useKioskDevice";
+import { completeOrder } from "../../services/kiosk/order";
+import { SuccessMessage } from "../../components/Message";
+import { useCartContext } from "../../hooks/useCartContext";
 
 // { total, onCancel, onSuccess }
 const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [success, setSuccess] = useState(false);
+  const { clearCart } = useCartContext();
+
+  const location = useLocation();
+
+  const { paymentTerminal } = useKioskDevice();
+
+  const navigate = useNavigate();
+
+  const handleResetKiosk = () => {
+    navigate("/customer/kiosk/main");
+  };
+
+  useEffect(() => {
+    let timeoutId;
+
+    if (success) {
+      timeoutId = setTimeout(() => {
+        handleResetKiosk();
+      }, 10000);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [success]);
+
+  if (!paymentTerminal) {
+    console.log("Payment terminal not found");
+    return <Navigate to="/customer/kiosk/main" />;
+  }
+
+  const { orderId, clientSecret, amount, currency } = location.state || {};
+
+  if (!orderId) {
+    return <Navigate to="/customer/kiosk/main" />;
+  }
+
+  //This function act like presenting payment terminal
+  const completePayment = async () => {
+    try {
+      if (!clientSecret) {
+        console.error("PaymentIntent or client_secret missing");
+        return;
+      }
+
+      const collectResult =
+        await paymentTerminal.collectPaymentMethod(clientSecret);
+
+      if ("error" in collectResult) {
+        console.error("Failed to collect payment method", collectResult.error);
+        return;
+      }
+
+      const pIntent = collectResult.paymentIntent;
+
+      const processResult = await paymentTerminal.processPayment(pIntent);
+      if ("error" in processResult) {
+        console.error("Failed to process payment", processResult.error);
+        return;
+      }
+
+      console.log("payment successful", processResult.paymentIntent.status);
+
+      const completeResult = await completeOrder(
+        orderId,
+        processResult.paymentIntent.id,
+      );
+
+      if (completeResult.success === true) {
+        setSuccess(true);
+        clearCart();
+        // navigate("/customer/kiosk/print-receipt");
+      }
+    } catch (error) {
+      console.log("Critical error found during complete order", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -18,12 +98,29 @@ const PaymentPage = () => {
             &times;
           </button>
         </div>
+        {success && (
+          <>
+            <SuccessMessage onClose={() => setSuccess(false)}>
+              {" "}
+              Payment is Successful. Order completed
+            </SuccessMessage>
+            <button
+              onClick={handleResetKiosk}
+              className="bg-slate-800 text-white px-12 py-6 rounded-2xl text-2xl font-bold shadow-lg hover:bg-slate-700 active:scale-95"
+            >
+              Start New Order
+            </button>
+            <p className="text-slate-400 mt-6 font-medium">
+              Resetting in 10 seconds...
+            </p>
+          </>
+        )}
 
         <div className="p-8">
           {/* Total Display */}
           <div className="text-center mb-8">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-              Total Amount Due
+            <p className="text-m font-bold text-slate-400 uppercase tracking-widest mb-2">
+              {currency.toUpperCase()} &nbsp; {(amount / 100).toFixed(2)}
             </p>
             <p className="text-5xl font-black text-cyan-700">
               {/* ${total.toFixed(2)} */}
@@ -85,6 +182,7 @@ const PaymentPage = () => {
             <button
               //   onClick={() => onSuccess(paymentMethod)}
               className="btn-primary w-full py-4 text-lg shadow-cyan-200"
+              onClick={completePayment}
             >
               Confirm & Print Receipt
             </button>

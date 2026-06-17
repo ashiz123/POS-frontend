@@ -1,26 +1,31 @@
 import { Route, Routes } from "react-router-dom";
-import ProtectedRoute from "../features/auth/ProtectedRoute";
-
-import Dashboard from "../features/business/Dashboard";
-import ProductList from "../features/products/ProductList";
-import ProductCreate from "../features/products/ProductCreate";
-import CategoryList from "../features/category/CategoryList";
-import OrderList from "../features/Orders/OrderList";
-import CategoryCreate from "../features/category/CategoryCreate";
-import EmployeeCreate from "../features/employee/employeeCreate";
+import Dashboard from "../features/admin/business/Dashboard";
+import ProductList from "../features/admin/products/ProductList";
+import ProductCreate from "../features/admin/products/ProductCreate";
+import CategoryList from "../features/admin/category/CategoryList";
+import OrderList from "../features/admin/Orders/OrderList";
+import CategoryCreate from "../features/admin/category/CategoryCreate";
+import EmployeeCreate from "../features/admin/employee/employeeCreate";
 import ErrorPage from "../components/ErrorPage";
-import KioskRequest from "../features/kiosk/KioskRequest";
-import SelectBusiness from "../features/business/SelectBusiness";
-import BusinessProtectedRoute from "../features/auth/BusinessProtectedRoute";
-import AddBusiness from "../features/business/AddBusiness";
-import VerifyOTP from "../features/auth/verifyOTP";
+import KioskRequest from "../features/admin/kiosk/KioskRequest";
+import SelectBusiness from "../features/admin/business/SelectBusiness";
+import BusinessProtectedRoute from "../features/admin/auth/BusinessProtectedRoute";
+import AddBusiness from "../features/admin/business/AddBusiness";
+import VerifyOTP from "../features/admin/auth/verifyOTP";
+import ProtectedRoute from "../features/admin/auth/ProtectedRoute";
+import Stocks from "../features/admin/products/Stock";
+import LoginPage from "../features/admin/LandingPage";
+import { PublicRoute } from "../features/admin/auth/PublicRoute";
 
 const BusinessRoutes = () => {
   return (
     <Routes>
       {/* <Route path="" element={<LandingPage />} />
       <Route path="/user/register" element={<RegisterUser />} /> */}
-      <Route path="/user/verify-otp" element={<VerifyOTP />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/user/verify-otp" element={<VerifyOTP />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
 
       <Route element={<ProtectedRoute />}>
         <Route path="/select" element={<SelectBusiness />} />
@@ -34,6 +39,7 @@ const BusinessRoutes = () => {
           {/* product paths resolve to: /product/list etc. */}
           <Route path="/product/list" element={<ProductList />} />
           <Route path="/product/create" element={<ProductCreate />} />
+          <Route path="/product/:productId/stock" element={<Stocks />} />
 
           {/* category paths resolve to: /category/list etc. */}
           <Route path="/category/list" element={<CategoryList />} />

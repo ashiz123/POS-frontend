@@ -70,16 +70,17 @@ export const Sidebar = () => {
           {!isCollapsed && (
             <div className="ml-4 border-l border-slate-800 pl-4">
               <Link
-                to="/business/product/list"
-                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
-              >
-                All Products
-              </Link>
-              <Link
                 to="/business/product/create"
                 className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
               >
                 Add Product
+              </Link>
+
+              <Link
+                to="/business/product/list"
+                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
+              >
+                Products
               </Link>
             </div>
           )}
@@ -93,16 +94,16 @@ export const Sidebar = () => {
           {!isCollapsed && (
             <div className="ml-4 border-l border-slate-800 pl-4">
               <Link
-                to="/business/category/list"
-                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
-              >
-                View All
-              </Link>
-              <Link
                 to="/business/category/create"
                 className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
               >
-                New Category
+                Add Category
+              </Link>
+              <Link
+                to="/business/category/list"
+                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
+              >
+                Categories
               </Link>
             </div>
           )}
@@ -156,6 +157,29 @@ export const Sidebar = () => {
 
         <NavGroup
           icon="📂"
+          label={!isCollapsed ? "Summary" : ""}
+          active={location.pathname.startsWith("/business/settings")}
+        >
+          {!isCollapsed && (
+            <div className="ml-4 border-l border-slate-800 pl-4">
+              <Link
+                to=""
+                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
+              >
+                Summary & Reports
+              </Link>
+              <Link
+                to=""
+                className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
+              >
+                Analytics
+              </Link>
+            </div>
+          )}
+        </NavGroup>
+
+        <NavGroup
+          icon="📂"
           label={!isCollapsed ? "Settings" : ""}
           active={location.pathname.startsWith("/business/settings")}
         >
@@ -184,11 +208,6 @@ export const Sidebar = () => {
           <span className="w-5 text-lg">🖥️</span>
           {!isCollapsed && <span className="truncate">Orders</span>}
         </Link>
-
-        <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-slate-800 rounded-md text-sm font-medium transition-colors text-left">
-          <span className="w-5 text-lg">📟</span>
-          {!isCollapsed && <span className="truncate">Terminals</span>}
-        </button>
       </nav>
 
       {/* Logout Footer */}

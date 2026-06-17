@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { categoryList } from "../services/category";
+import {
+  activeCategoryList,
+  allCategoryList,
+} from "../services/admin/category";
 import type { CategoryData } from "../validations/categoryValidation";
 
-export const useGetCategories = () => {
+export const useGetCategories = (showAll: boolean = false) => {
   const [categories, setCategories] = useState<
     (CategoryData & { _id: string })[]
   >([]);
@@ -11,7 +14,13 @@ export const useGetCategories = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const categoriesApi = await categoryList();
+        let categoriesApi;
+        if (showAll) {
+          categoriesApi = await allCategoryList();
+        } else {
+          categoriesApi = await activeCategoryList();
+        }
+
         setCategories(categoriesApi.data);
       } catch (error) {
         console.log(error);

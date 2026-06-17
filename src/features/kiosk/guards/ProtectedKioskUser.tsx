@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useKioskUser } from "../../../hooks/useKioskAuth";
-import { getKioskUserSession } from "../../../services/kiosk";
+import { getKioskUserSession } from "../../../services/kiosk/kiosk";
 import { useEffect, useState } from "react";
 
 export const ProtectedKioskUser = () => {

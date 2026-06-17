@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import KioskLogin from "../src/features/kiosk/KioskLogin";
+import KioskLogin from "../src/features/kiosk/auth/KioskLogin";
 import { MemoryRouter } from "react-router-dom";
-import { loginKiosk } from "../src/services/kiosk";
+import { loginKiosk } from "../src/services/kiosk/kiosk";
 import useForm from "../src/hooks/useForm";
 
 // Mocks

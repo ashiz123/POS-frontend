@@ -1,11 +1,14 @@
-import { Route, Routes } from "react-router-dom";
-import KioskMain from "../features/kiosk/KioskMain";
+import { Outlet, Route, Routes } from "react-router-dom";
 import ErrorPage from "../components/ErrorPage";
-import KioskLogin from "../features/kiosk/KioskLogin";
+import KioskLogin from "../features/kiosk/auth/KioskLogin";
 import { ProtectedKioskUser } from "../features/kiosk/guards/ProtectedKioskUser";
 import { ProtectedKioskDevice } from "../features/kiosk/guards/ProtectedKioskDevice";
 import { KioskDeviceProvider } from "../providers/KioskDeviceProvider";
 import { StaffSessionProvider } from "../providers/StaffSessionProvider";
+import MainPage from "../features/kiosk/mainPage";
+import PaymentPage from "../features/kiosk/PaymentPage";
+import { CartProvider } from "../providers/CartProvider";
+import PrintReceipt from "../features/kiosk/PrintReceipt";
 
 const CustomerRoutes = () => {
   return (
@@ -26,7 +29,17 @@ const CustomerRoutes = () => {
             </StaffSessionProvider>
           }
         >
-          <Route path="/kiosk/main" element={<KioskMain />} />
+          <Route
+            element={
+              <CartProvider>
+                <Outlet />{" "}
+              </CartProvider>
+            }
+          >
+            <Route path="/kiosk/main" element={<MainPage />} />
+            <Route path="/kiosk/payment" element={<PaymentPage />} />
+            <Route path="/kiosk/print-receipt" element={<PrintReceipt />} />
+          </Route>
         </Route>
       </Route>
 

@@ -1,3 +1,5 @@
+//this is unused
+
 import { Link } from "react-router-dom";
 
 const KioskPage = () => {
