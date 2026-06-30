@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_URL } from "../../config/api.config";
 
 const apiKioskInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: API_URL,
   timeout: 5000,
   headers: { Accept: "application/json" },
   withCredentials: true,
