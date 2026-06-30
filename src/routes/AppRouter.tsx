@@ -1,30 +1,41 @@
 import { Route, Routes } from "react-router-dom";
-import RegisterUser from "../features/auth/RegisterUser";
-import LandingPage from "../features/LandingPage";
-import ProtectedRoute from "../features/auth/ProtectedRoute";
-import KioskMain from "../features/kiosk/KioskMain";
-import PaymentPage from "../features/kiosk/PaymentPage";
-import BusinessLogin from "../features/business/BusinessLogin";
-import ProfilePage from "../features/business/Profile";
-import Dashboard from "../features/business/dashboard";
+import RegisterUser from "../features/admin/auth/RegisterUser";
+import { AuthProvider } from "../providers/authProvider";
+import KioskActivation from "../features/kiosk/auth/KioskActivation";
+import BusinessRoutes from "./BusinessRoutes";
+import CustomerRoutes from "./CustomerRoutes";
+import ErrorPage from "../components/ErrorPage";
+import TerminalSetup from "../ZTerminalImplement/terminalSetup";
 
 const AppRouter = () => {
   return (
     <Routes>
-      {/* public route */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/auth/register" element={<RegisterUser />} />
+      <Route path="/business/user/register" element={<RegisterUser />} />
+      <Route path="/customer/kiosk/activate" element={<KioskActivation />} />
 
-      <Route element={<ProtectedRoute />}>
-        {/* Kiosk Section */}
-        <Route path="/kiosk/main" element={<KioskMain />} />
-        <Route path="/kiosk/payment" element={<PaymentPage />} />
+      {/* <Route path="/customer/kiosk/main" element={<KioskMain />} /> */}
 
-        {/* Business  */}
-        <Route path="/business/dashboard" element={<Dashboard />} />
-        <Route path="/business/login" element={<BusinessLogin />} />
-        <Route path="/business/profile" element={<ProfilePage />} />
-      </Route>
+      <Route
+        path="/business/*"
+        element={
+          <AuthProvider>
+            <BusinessRoutes />
+          </AuthProvider>
+        }
+      />
+      <Route path="/customer/*" element={<CustomerRoutes />} />
+      <Route path="/terminal" element={<TerminalSetup />} />
+
+      <Route
+        path="/*"
+        element={
+          <ErrorPage
+            title="Page not found"
+            code="404"
+            message="The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
+          />
+        }
+      />
     </Routes>
   );
 };

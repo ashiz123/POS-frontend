@@ -1,18 +1,19 @@
 import { useState } from "react";
-import type { RegisterData } from "../validations/registerValidations";
 
 //Advance than just doing useState<Record<string, string>>
-type FormErrors = Partial<Record<keyof RegisterData | "root", string>>;
+type FormErrors<T> = Partial<Record<keyof T | "root", string>>;
 
-const useForm = (initalFormData, validation) => {
-  const [formData, setFormData] = useState(initalFormData);
-  const [errors, setErrors] = useState<FormErrors>({});
+const useForm = <T>(initalFormData, validation) => {
+  const [formData, setFormData] = useState<T>(initalFormData);
+  const [errors, setErrors] = useState<FormErrors<T>>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -39,6 +40,10 @@ const useForm = (initalFormData, validation) => {
     setFormData,
     errors,
     setErrors,
+    success,
+    setSuccess,
+    loading,
+    setLoading,
     handleChange,
     handleSubmit,
   };
