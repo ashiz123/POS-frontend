@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { validateForm } from "../../../../utils/stockUtils";
+import React from "react";
 import useForm from "../../../../hooks/useForm";
 import {
   inventoryBatchSchema,
@@ -24,14 +23,8 @@ export const StockAdd: React.FC<StockAddProps> = ({
   onAddBatch,
   onClose,
 }) => {
-  const {
-    handleChange,
-    handleSubmit,
-    setFormData,
-    formData,
-    setErrors,
-    errors,
-  } = useForm<InventoryBatchData>(emptyForm, inventoryBatchSchema);
+  const { handleChange, handleSubmit, setFormData, formData, setErrors } =
+    useForm<InventoryBatchData>(emptyForm, inventoryBatchSchema);
 
   const submitBatch = async (newBatch) => {
     const mappedToSendToApi = {
