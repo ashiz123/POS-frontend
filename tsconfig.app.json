@@ -29,7 +29,7 @@
   "include": [
     "src",
     "src/features/category/.tsx",
-    "tests/KioskLogin.test.tsx",
-    "tests/KioskActivation.test.tsx"
+    "testing/KioskLogin.test.tsx",
+    "testing/KioskActivation.test.tsx"
   ]
 }
