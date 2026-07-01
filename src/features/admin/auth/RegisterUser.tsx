@@ -29,7 +29,7 @@ const RegisterUser = () => {
         email: "",
         password: "",
       });
-      navigate("/");
+      navigate("/business/login");
     } else {
       console.log("Registration failed.");
     }
