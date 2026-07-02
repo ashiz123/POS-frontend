@@ -29,6 +29,7 @@ const SelectBusiness = () => {
   const location = useLocation();
   const [businesses, setBusinesses] = useState<BusinessPropsLean[] | null>([]);
   const { setUser, setBusiness } = useAuth();
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     //userId is not required to get businesses as businessId is coming through accessToken stored in cookies
@@ -48,15 +49,20 @@ const SelectBusiness = () => {
 
   const selectBusiness = async (biz) => {
     try {
-      await loginUserWithBusiness(biz._id);
+      await loginUserWithBusiness(biz._id, biz.status);
       setBusiness(biz);
 
       if (biz) {
         console.log("Navigating with business:", biz._id);
         navigate("/business/dashboard");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
+      if (err.response?.status === 409) {
+        setErrorMessage(
+          "Business is not active yet, Waiting admin response.......",
+        );
+      }
     }
   };
 
@@ -93,6 +99,8 @@ const SelectBusiness = () => {
           <div className="alert-success">{successMessage}</div>
         )}
 
+        {errorMessage && <div className="alert-error">{errorMessage}</div>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Existing Business Cards */}
           {businesses &&
@@ -102,11 +110,19 @@ const SelectBusiness = () => {
                 onClick={() => selectBusiness(biz)}
                 className="group bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
               >
-                <div className="p-3 w-fit bg-blue-50 rounded-2xl group-hover:bg-primary-600 transition-colors mb-4">
-                  <Store
-                    className="w-6 h-6 text-primary-600 group-hover:text-white"
-                    strokeWidth={2}
-                  />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-blue-50 rounded-2xl">
+                    <Store className="w-6 h-6 text-blue-600" strokeWidth={2} />
+                  </div>
+                  <span
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                      biz.status === "active"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {biz.status}
+                  </span>
                 </div>
 
                 <h3 className="text-lg font-bold text-slate-800 mb-1 group-primary-600 hover:text-primary-600">

@@ -15,6 +15,7 @@ export const registerBusiness = async (businessData) => {
 export const getBusinessOfAuthUser = async () => {
   try {
     const response = await apiAdminInstance.get("/business/lists/byAuth");
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
