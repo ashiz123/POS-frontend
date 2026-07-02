@@ -31,7 +31,12 @@ const AddBusiness = () => {
       address: "",
       businessType: "",
     });
-    navigate("/business/select");
+    navigate("/business/select", {
+      state: {
+        successMessage:
+          "Business requested successfully, Wait for admin response",
+      },
+    });
   };
 
   return (
