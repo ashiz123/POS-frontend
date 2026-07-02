@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Store, LogOut, PlusCircle, MapPin } from "lucide-react";
 import { getBusinessOfAuthUser } from "../../../services/admin/business";
 import {
@@ -26,6 +26,7 @@ export interface BusinessPropsLean {
 
 const SelectBusiness = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [businesses, setBusinesses] = useState<BusinessPropsLean[] | null>([]);
   const { setUser, setBusiness } = useAuth();
 
@@ -42,6 +43,8 @@ const SelectBusiness = () => {
 
     getBusinesses();
   }, []);
+
+  const successMessage = location.state?.successMessage;
 
   const selectBusiness = async (biz) => {
     try {
@@ -85,6 +88,10 @@ const SelectBusiness = () => {
             Logout
           </button>
         </div>
+
+        {successMessage && (
+          <div className="alert-success">{successMessage}</div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Existing Business Cards */}

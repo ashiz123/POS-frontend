@@ -141,7 +141,7 @@ const RegisterUser = () => {
             <p className="text-sm text-slate-500">
               Already using Nodal?{" "}
               <Link
-                to="/"
+                to="/business/login"
                 className="font-bold text-cyan-700 hover:text-cyan-800 transition-colors"
               >
                 Sign in
