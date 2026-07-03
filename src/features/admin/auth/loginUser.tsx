@@ -53,54 +53,77 @@ const LoginUser = () => {
       </h2>
       <div className="bg-slate-50/50 p-6 rounded-xl border border-slate-100 space-y-4">
         <form
-          className="space-y-4"
+          className="space-y-6 w-full"
           onSubmit={(e) => handleSubmit(e, submitLoginForm)}
         >
+          {/* Error Header */}
           {errors.root && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 text-red-700">
-              <p className="font-bold">Error</p>
-              <p>{errors.root}</p>
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 rounded-r-md">
+              <p className="font-bold">Authentication Error</p>
+              <p className="text-sm">{errors.root}</p>
             </div>
           )}
 
-          <div className="relative pb-6">
+          {/* Email/Username Field */}
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-slate-700">
+              Email or Username
+            </label>
             <input
               type="text"
-              placeholder="Username/Email"
-              className="w-full px-4 py-2 rounded-md border border-slate-300 focus:ring-2 focus:ring-cyan-500 outline-none bg-white transition-all"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2.5 rounded-md border border-slate-300 focus:ring-2 focus:ring-cyan-500 outline-none bg-white transition-all shadow-sm"
               onChange={handleChange}
               name="email"
               value={formData.email}
             />
             {errors.email && (
-              <span className="absolute error-text">{errors.email}</span>
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
             )}
           </div>
 
-          <div className="relative pb-6">
+          {/* Password Field */}
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium text-slate-700">
+                Password
+              </label>
+            </div>
             <input
               type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 rounded-md border border-slate-300 focus:ring-2 focus:ring-cyan-500 outline-none bg-white transition-all"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2.5 rounded-md border border-slate-300 focus:ring-2 focus:ring-cyan-500 outline-none bg-white transition-all shadow-sm"
               onChange={handleChange}
               name="password"
               value={formData.password}
             />
             {errors.password && (
-              <span className="absolute error-text">{errors.password}</span>
+              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
             )}
           </div>
 
+          {/* Login Button */}
           <button
             type="submit"
-            className="btn-primary w-full py-4 shadow-lg shadow-cyan-100 "
+            className="btn-primary w-full py-3.5 shadow-lg shadow-cyan-100 font-bold tracking-wide hover:opacity-90 transition-opacity"
           >
             LOGIN
           </button>
+
+          {/* Registration Footer */}
+          <div className="text-center text-sm text-slate-600 mt-4">
+            Don't have an account?{" "}
+            <Link
+              to="/business/user/register"
+              className="text-cyan-600 font-semibold hover:underline"
+            >
+              Register now
+            </Link>
+          </div>
         </form>
       </div>
 
-      {location.pathname === "/" ? (
+      {/* {location.pathname === "/" ? (
         <div className="flex flex-col items-center ">
           <span className="italic text-gray-400 text-sm select-none -mb-5">
             User need to register first to create the business account
@@ -114,7 +137,7 @@ const LoginUser = () => {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

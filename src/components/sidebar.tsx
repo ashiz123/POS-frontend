@@ -158,18 +158,18 @@ export const Sidebar = () => {
         <NavGroup
           icon="📂"
           label={!isCollapsed ? "Summary" : ""}
-          active={location.pathname.startsWith("/business/settings")}
+          active={location.pathname.startsWith("/business/summary")}
         >
           {!isCollapsed && (
             <div className="ml-4 border-l border-slate-800 pl-4">
               <Link
-                to=""
+                to="/business/summary/reports"
                 className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
               >
                 Summary & Reports
               </Link>
               <Link
-                to=""
+                to="/business/summary/analytics"
                 className="block py-1.5 text-xs text-slate-400 hover:text-cyan-400"
               >
                 Analytics
