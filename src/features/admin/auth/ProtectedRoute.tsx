@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
         {error}
       </div>
     );
-  if (!user) return <Navigate to="/business/login" />;
+  if (!user) return <Navigate to="/" />;
 
   return <Outlet />;
 };

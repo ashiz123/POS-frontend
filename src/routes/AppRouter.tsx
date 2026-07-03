@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import RegisterUser from "../features/admin/auth/RegisterUser";
 import { AuthProvider } from "../providers/authProvider";
 import KioskActivation from "../features/kiosk/auth/KioskActivation";
 import BusinessRoutes from "./BusinessRoutes";

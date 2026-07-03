@@ -14,19 +14,17 @@ import AddBusiness from "../features/admin/business/AddBusiness";
 import VerifyOTP from "../features/admin/auth/verifyOTP";
 import ProtectedRoute from "../features/admin/auth/ProtectedRoute";
 import Stocks from "../features/admin/products/Stock";
-import LoginPage from "../features/admin/LandingPage";
 import { PublicRoute } from "../features/admin/auth/PublicRoute";
 import RegisterUser from "../features/admin/auth/RegisterUser";
+import LoginUser from "../features/admin/auth/loginUser";
 
 const BusinessRoutes = () => {
   return (
     <Routes>
-      {/* <Route path="" element={<LandingPage />} />
-      <Route path="/user/register" element={<RegisterUser />} /> */}
       <Route element={<PublicRoute />}>
         <Route path="/user/register" element={<RegisterUser />} />
         <Route path="/user/verify-otp" element={<VerifyOTP />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginUser />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>
