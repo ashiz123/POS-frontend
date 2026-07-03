@@ -6,11 +6,12 @@ import BusinessRoutes from "./BusinessRoutes";
 import CustomerRoutes from "./CustomerRoutes";
 import ErrorPage from "../components/ErrorPage";
 import TerminalSetup from "../ZTerminalImplement/terminalSetup";
+import Home from "../features/home";
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/business/user/register" element={<RegisterUser />} />
+      <Route path="/" element={<Home />} />
       <Route path="/customer/kiosk/activate" element={<KioskActivation />} />
 
       {/* <Route path="/customer/kiosk/main" element={<KioskMain />} /> */}

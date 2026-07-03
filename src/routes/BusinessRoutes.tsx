@@ -16,6 +16,7 @@ import ProtectedRoute from "../features/admin/auth/ProtectedRoute";
 import Stocks from "../features/admin/products/Stock";
 import LoginPage from "../features/admin/LandingPage";
 import { PublicRoute } from "../features/admin/auth/PublicRoute";
+import RegisterUser from "../features/admin/auth/RegisterUser";
 
 const BusinessRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const BusinessRoutes = () => {
       {/* <Route path="" element={<LandingPage />} />
       <Route path="/user/register" element={<RegisterUser />} /> */}
       <Route element={<PublicRoute />}>
+        <Route path="/user/register" element={<RegisterUser />} />
         <Route path="/user/verify-otp" element={<VerifyOTP />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>

@@ -4,6 +4,7 @@ import { registerValidation } from "../../../validations/registerValidations";
 import { registerUser } from "../../../services/admin/user";
 import { type RegisterData } from "../../../validations/registerValidations";
 import { ValidationError } from "../../../components/Message";
+import Logo from "../../../components/Logo";
 
 const RegisterUser = () => {
   const { formData, setFormData, errors, handleChange, handleSubmit } =
@@ -40,9 +41,7 @@ const RegisterUser = () => {
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-cyan-700 rounded-xl mb-4 shadow-lg shadow-cyan-200">
-            <span className="text-white text-2xl font-black italic">S</span>
-          </div>
+          <Logo />
           <h1 className="text-2xl font-black tracking-tight text-slate-900">
             Create your account
           </h1>
