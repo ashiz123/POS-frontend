@@ -97,7 +97,7 @@ const VerifyOTP = () => {
               value={digit}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-200 rounded-xl bg-slate-50 text-slate-800 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+              className="w-12 h-14 text-center text-2xl font-bold border-2 border-slate-200 rounded-xl bg-slate-50 text-slate-800 focus:border-primary-600 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
             />
           ))}
         </div>
@@ -106,14 +106,14 @@ const VerifyOTP = () => {
         <button
           type="submit"
           disabled={otp.some((val) => val === "")}
-          className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98] uppercase tracking-widest text-sm"
+          className="w-full py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98] uppercase tracking-widest text-sm"
         >
           Verify Code
         </button>
 
         <button
           type="button"
-          className="mt-4 text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-tighter"
+          className="mt-4 text-xs font-bold text-primary-600 hover:text-primary-800 uppercase tracking-tighter"
         >
           Resend Code
         </button>

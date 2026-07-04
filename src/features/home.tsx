@@ -1,139 +1,100 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../components/Logo";
+import { Star } from "lucide-react";
+import { scrollToSection } from "../utils/scrollToSection";
+import Demo from "./home/Demo";
+import Features from "./home/features";
+import SystemManual from "./home/SystemManual";
+import Navbar from "./home/Navbar";
+import TrustPilot from "./home/TrustPilot";
+import Footer from "./home/Footer";
+import Chatbot from "./home/Chatbot";
+import TopContact from "./home/TopContact";
 
 const Home = () => {
-  const [messages, setMessages] = useState([
-    { role: "ai", content: "How can I help you optimize your sales today?" },
-  ]);
-  const [input, setInput] = useState("");
-
-  const sendMessageToGemini = async (message) => {
-    if (!message.trim()) return;
-
-    // Add user message
-    const newMessages = [...messages, { role: "user", content: message }];
-    setMessages(newMessages);
-    setInput("");
-
-    try {
-      const payload = {
-        contents: [{ parts: [{ text: message }] }],
-        systemInstruction: {
-          parts: [
-            {
-              text: "You are a professional POS Sales Assistant. Provide short, actionable business advice.",
-            },
-          ],
-        },
-      };
-
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      const result = await response.json();
-      const aiResponse = result.candidates[0].content.parts[0].text;
-
-      setMessages([...newMessages, { role: "ai", content: aiResponse }]);
-    } catch (error) {
-      console.log(error);
-      setMessages([
-        ...newMessages,
-        { role: "ai", content: "Error: Unable to connect to AI." },
-      ]);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white text-black selection:bg-primary-500 selection:text-white">
-      {/* Navigation */}
-      <nav className="flex justify-between items-center px-6 md:px-12 py-8 max-w-7xl mx-auto ">
-        <div className="text-2xl font-bold tracking-tighter text-primary-500">
-          Nodal POS
-        </div>
-        <div className="flex items-center gap-6">
-          <a
-            href="#features"
-            className="text-sm text-primary-500  hover:text-primary-800 transition"
-          >
-            Features
-          </a>
-          <Link
-            to="/business/login"
-            className="px-5 py-2 rounded-full border border-primary-700 hover:bg-primary-800 hover:text-white transition font-medium text-sm text-center text-primary-700"
-          >
-            Business Login
-          </Link>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-cyan-500 selection:text-white">
+      {/* Top Contact Header */}
+      <TopContact />
+      {/* Main Navigation */}
+      <Navbar />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 md:px-12 py-10 md:py-20 grid md:grid-cols-2 gap-16 items-center">
+      {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-6 md:px-12 pt-16 pb-12 text-center md:text-left grid md:grid-cols-2 gap-16 items-center">
         <div>
-          <Logo />
-          &nbsp;
-          <div className="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-primary-400 uppercase bg-primary-600 text-white rounded-full ml-4">
-            Next generation POS
+          <div className="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-cyan-600 uppercase bg-cyan-50 rounded-full border border-cyan-100">
+            Next Gen POS
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] mb-8">
+          <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
             Transaction power,
             <br />
-            <span className="text-primary-500">simplified.</span>
+            <span className="text-cyan-600">simplified.</span>
           </h1>
-          <p className="text-lg text-slate-400 mb-10 leading-relaxed max-w-lg">
+          <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg mx-auto md:mx-0">
             The enterprise-grade POS system built for high-volume retail.
-            Integrated with AI to give you real-time business insights.
+            Integrated with intelligent tracking to give you real-time business
+            insights.
           </p>
-          <Link
-            to="/business/user/register"
-            className="px-8 py-4 text-white bg-primary-600 hover:bg-primary-700 rounded-xl font-bold transition"
-          >
-            Get Started
-          </Link>
-        </div>
-
-        {/* AI Chat Widget */}
-        <div className="relative bg-primary-900 rounded-2xl p-6 border border-primary-900 shadow-2xl">
-          <h3 className="text-lg font-semibold mb-4 text-white">
-            Ask AI Sales Assistant
-          </h3>
-          <div className="h-[400px] overflow-y-auto mb-4 p-4 bg-primary-950 rounded-xl border border-primary-800 text-sm space-y-4">
-            {messages.map((msg, i) => (
-              <p
-                key={i}
-                className={msg.role === "ai" ? "text-green-400" : "text-white"}
-              >
-                {msg.role === "ai" ? "AI: " : "You: "}
-                {msg.content}
-              </p>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) =>
-                e.key === "Enter" && sendMessageToGemini(input)
-              }
-              type="text"
-              placeholder="Ask anything..."
-              className="flex-1 bg-primary-800 text-white px-4 py-2 rounded-xl text-sm border border-primary-700 focus:outline-none focus:ring-2 focus:ring-white-500"
-            />
-            <button
-              onClick={() => sendMessageToGemini(input)}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700  rounded-xl font-bold transition text-sm text-white"
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <Link
+              to="/business/user/register"
+              className="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition shadow-lg shadow-cyan-500/25"
             >
-              Send
+              Get Started Free
+            </Link>
+            <button
+              onClick={() => scrollToSection("demo")}
+              className="px-8 py-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 rounded-xl font-bold transition"
+            >
+              Watch Demo
             </button>
           </div>
         </div>
+
+        <div className="relative aspect-square md:aspect-auto md:h-[500px] bg-slate-100 rounded-2xl border border-slate-200 shadow-2xl shadow-slate-200 overflow-hidden group">
+          <img
+            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            alt="Nodal POS Interface"
+            className="w-full h-full object-cover object-center opacity-90 group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
+
+          <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md border border-slate-200 p-4 rounded-xl shadow-xl transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center shrink-0">
+                <Star className="w-5 h-5 text-cyan-500" />
+              </div>
+              <div>
+                <p className="text-slate-900 font-semibold text-sm">
+                  Nodal POS v1.0
+                </p>
+                <p className="text-slate-500 text-xs">
+                  Lightning fast checkouts
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
+
+      {/* SPECIAL FULL-WIDTH TRUSTPILOT BANNER */}
+      <TrustPilot />
+
+      {/* DEMO Section */}
+      <Demo />
+
+      {/* Features Section */}
+      <Features />
+
+      {/* Documentation Section */}
+      <SystemManual />
+
+      {/* Basic Footer */}
+      <Footer />
+
+      {/* Floating Chat Widget */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <Chatbot />
+      </div>
     </div>
   );
 };

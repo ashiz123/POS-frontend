@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 import Master from "../../../components/Master";
 import { getOrderList } from "../../../services/admin/order";
+import { getDateOnly, getTimeOnly } from "../../../utils/date";
 
 type OrderType = {
   _id: string;
+  terminalId: {
+    _id: string;
+    name: string;
+  };
+  terminalSessionId: {
+    assignId: { _id: string; email: string };
+  };
+  orderId: string;
   businessId: string;
+  status: string;
+  total: number;
+  createdAt: string;
 };
 
 const OrderList = () => {
@@ -66,45 +78,76 @@ const OrderList = () => {
           </div>
 
           {/* <!-- Table Card --> */}
-          <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+          <div
+            className="w-full overflow-x-auto border border-slate-200 rounded-lg shadow-sm 
+                scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100"
+          >
             <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              {/* 2. Added 'sticky top-0' to keep the header visible during vertical scroll */}
+              <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                     SN
                   </th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+                    Date
+                  </th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+                    Time
+                  </th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                     Order number
                   </th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Slug
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+                    Order total
                   </th>
-
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Category
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+                    Terminal name
                   </th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Stock Type
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+                    Employee email
                   </th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right whitespace-nowrap">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
                 {orderItems.map((order, index) => (
-                  <tr key={order._id} className="hover:bg-slate-50 transition">
-                    <td className="px-6 py-4 font-medium">{index + 1}</td>
-                    <td className="px-6 py-4 font-medium">testing</td>
-                    <td className="px-6 py-4 font-medium">testing</td>
-                    <td className="px-6 py-4 text-slate-500">testing</td>
-                    <td className="px-6 py-4">testing</td>
-                    <td className="px-6 py-4">Completed</td>
+                  <tr
+                    key={order._id}
+                    className="hover:bg-slate-50 transition text-center"
+                  >
+                    {/* 3. Added 'whitespace-nowrap' to prevent cells from wrapping, ensuring horizontal scroll works */}
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {getDateOnly(order.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {getTimeOnly(order.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {order.orderId}
+                    </td>
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {order.total}
+                    </td>
+                    <td className="px-6 py-4 font-medium whitespace-nowrap">
+                      {order.terminalId.name}
+                    </td>
+                    <td className="px-6 py-4 text-slate-500 whitespace-nowrap">
+                      {order.terminalSessionId?.assignId?.email || "-"}
+                    </td>
 
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {order.status}
+                    </td>
+                    <td className="px-6 py-4 text-right whitespace-nowrap">
                       <button className="text-primary-600 hover:text-primary-800 font-medium mr-3">
                         Edit
                       </button>
