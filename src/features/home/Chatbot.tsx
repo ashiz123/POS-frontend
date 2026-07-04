@@ -1,5 +1,5 @@
 import { Bot, X, Send } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Chatbot() {
   const [isChatOpen, setIsChatOpen] = useState(false);
