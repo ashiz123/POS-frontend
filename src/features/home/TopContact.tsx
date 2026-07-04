@@ -1,4 +1,3 @@
-import React from "react";
 import { Mail, MessageCircle } from "lucide-react";
 import { whatsappLink } from "../../utils/whatsappLink";
 
