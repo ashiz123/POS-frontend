@@ -49,7 +49,7 @@ const SelectBusiness = () => {
 
   const selectBusiness = async (biz) => {
     try {
-      await loginUserWithBusiness(biz._id, biz.status);
+      await loginUserWithBusiness(biz._id);
       setBusiness(biz);
 
       if (biz) {
@@ -58,10 +58,8 @@ const SelectBusiness = () => {
       }
     } catch (err: any) {
       console.log(err);
-      if (err.response?.status === 409) {
-        setErrorMessage(
-          "Business is not active yet, Waiting admin response.......",
-        );
+      if (err.response?.status === 401) {
+        setErrorMessage("Business is not active yet, Waiting admin response.");
       }
     }
   };

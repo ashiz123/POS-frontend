@@ -50,14 +50,10 @@ export const logoutUser = async () => {
   }
 };
 
-export const loginUserWithBusiness = async (
-  businessId: string,
-  status: string,
-) => {
+export const loginUserWithBusiness = async (businessId: string) => {
   try {
     const response = await apiAdminInstance.post("/auth/loginWithBusiness", {
       businessId,
-      status,
     });
     return response.data;
   } catch (error) {
