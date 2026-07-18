@@ -7,6 +7,7 @@ import ErrorPage from "../components/ErrorPage";
 import TerminalSetup from "../ZTerminalImplement/terminalSetup";
 import Home from "../features/home";
 import Docs from "../features/Docs";
+import PaymentPage from "../features/kiosk/PaymentPage";
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/docs" element={<Docs />} />
       <Route path="/customer/kiosk/activate" element={<KioskActivation />} />
+      <Route path="/kiosk/payment" element={<PaymentPage />} />
 
       {/* <Route path="/customer/kiosk/main" element={<KioskMain />} /> */}
 

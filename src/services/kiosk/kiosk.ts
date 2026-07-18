@@ -45,3 +45,13 @@ export const loginKiosk = async (data) => {
     throw error;
   }
 };
+
+export const logoutTerminal = async () => {
+  try {
+    const response = await apiKioskInstance.post("/terminal/logout");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

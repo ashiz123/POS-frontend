@@ -98,21 +98,13 @@ const PaymentPage = () => {
             &times;
           </button>
         </div>
+
         {success && (
           <>
             <SuccessMessage onClose={() => setSuccess(false)}>
               {" "}
               Payment is Successful. Order completed
             </SuccessMessage>
-            <button
-              onClick={handleResetKiosk}
-              className="bg-slate-800 text-white px-12 py-6 rounded-2xl text-2xl font-bold shadow-lg hover:bg-slate-700 active:scale-95"
-            >
-              Start New Order
-            </button>
-            <p className="text-slate-400 mt-6 font-medium">
-              Resetting in 10 seconds...
-            </p>
           </>
         )}
 
@@ -186,6 +178,17 @@ const PaymentPage = () => {
             >
               Confirm & Print Receipt
             </button>
+
+            {success && (
+              <>
+                <button className="btn-primary w-full py-4 text-lg shadow-cyan-200">
+                  Start New Order
+                </button>
+                <p className="text-slate-400 p-3 font-medium text-center">
+                  Resetting in 10 seconds...
+                </p>
+              </>
+            )}
 
             <Link
               to="/kiosk/main"
