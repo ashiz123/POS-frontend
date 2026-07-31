@@ -6,6 +6,7 @@ export const registerUser = async (userData) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
@@ -22,9 +23,9 @@ export const loginUser = async (userData) => {
   }
 };
 
-export const loginWithOtp = async (otp: string) => {
+export const verifyOtp = async (otp: string) => {
   try {
-    const response = await apiAdminInstance.post("/auth/verifyOTP", { otp });
+    const response = await apiAdminInstance.post("/auth/verify-otp", { otp });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -33,7 +34,7 @@ export const loginWithOtp = async (otp: string) => {
 
 export const getAuthUser = async () => {
   try {
-    const response = await apiAdminInstance.get("/auth/authUser");
+    const response = await apiAdminInstance.get("/auth/auth-user");
     return response.data.loggedInUser;
   } catch (error) {
     console.log(error);
@@ -54,6 +55,32 @@ export const loginUserWithBusiness = async (businessId: string) => {
   try {
     const response = await apiAdminInstance.post("/auth/loginWithBusiness", {
       businessId,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const forgetPassword = async (email) => {
+  try {
+    const response = await apiAdminInstance.post("/auth/forget-password", {
+      email,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const resetPassword = async (token, newPassword, confirmPassword) => {
+  try {
+    const response = await apiAdminInstance.post("/auth/reset-password", {
+      token,
+      newPassword,
+      confirmPassword,
     });
     return response.data;
   } catch (error) {

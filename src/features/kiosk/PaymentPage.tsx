@@ -191,8 +191,7 @@ const PaymentPage = () => {
             )}
 
             <Link
-              to="/kiosk/main"
-              //   onClick={onCancel}
+              to="/customer/kiosk/main"
               className="w-full text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
             >
               Cancel & Back to Cart

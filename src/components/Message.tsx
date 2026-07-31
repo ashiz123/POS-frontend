@@ -57,3 +57,7 @@ export const InfoMessage = ({ children }) => {
 export const WarningMessage = ({ children }) => {
   return <span className="warning-text">{children}</span>;
 };
+
+export const ErrorMessage = ({ children }) => {
+  return <span className="error-message">{children}</span>;
+};

@@ -31,7 +31,7 @@ const ProductCreate = () => {
     },
     ProductValidation,
   );
-  const { categories, loading } = useGetCategories();
+  const { categories, loading } = useGetCategories(true);
 
   const submitForm = async (request) => {
     try {

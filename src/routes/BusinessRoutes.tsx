@@ -17,6 +17,7 @@ import Stocks from "../features/admin/products/Stock";
 import { PublicRoute } from "../features/admin/auth/PublicRoute";
 import RegisterUser from "../features/admin/auth/RegisterUser";
 import LoginUser from "../features/admin/auth/loginUser";
+import Transactions from "../features/admin/payment/Transactions";
 
 const BusinessRoutes = () => {
   return (
@@ -47,6 +48,9 @@ const BusinessRoutes = () => {
 
           {/* orders path resolves to: /orders */}
           <Route path="/orders" element={<OrderList />} />
+
+          {/* orders path resolves to: /orders */}
+          <Route path="/payment/transactions" element={<Transactions />} />
 
           {/* employee path resolves to: /employee/create */}
           <Route path="/employee/create" element={<EmployeeCreate />} />

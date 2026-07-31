@@ -1,4 +1,3 @@
-import { Divide } from "lucide-react";
 import ProductCard from "./ProductCard";
 
 const ProductGrid = ({ products, categories, activeCategory, onAddToCart }) => {

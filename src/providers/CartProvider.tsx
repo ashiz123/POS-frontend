@@ -3,7 +3,6 @@ import { useState } from "react";
 import { type CartItem, CartContext } from "../contexts/CartContext";
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  //  FIXED: State is an array of CartItems, not the context itself
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (newItem) => {

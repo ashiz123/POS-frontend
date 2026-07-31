@@ -8,12 +8,16 @@ import TerminalSetup from "../ZTerminalImplement/terminalSetup";
 import Home from "../features/home";
 import Docs from "../features/Docs";
 import PaymentPage from "../features/kiosk/PaymentPage";
+import { ResetPasswordPage } from "../features/admin/auth/ResetPasswordPage";
+import ForgotPasswordPage from "../features/admin/auth/ForgetPasswordPage";
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/docs" element={<Docs />} />
+      <Route path="/forget-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       <Route path="/customer/kiosk/activate" element={<KioskActivation />} />
       <Route path="/kiosk/payment" element={<PaymentPage />} />
 
