@@ -11,7 +11,7 @@ export const productList = async () => {
   }
 };
 
-export const createProduct = async (data: ProductData) => {
+export const createProduct = async (data) => {
   try {
     const response = await apiAdminInstance.post("/product/create", data);
     return response.data;

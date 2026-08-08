@@ -80,7 +80,7 @@ const MainPage = () => {
         />
 
         {/* 4. Right Side: Checkout Basket Sidebar */}
-        <CartSidebar cartItems={cart} />
+        <CartSidebar />
       </div>
     </div>
   );

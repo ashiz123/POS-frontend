@@ -36,13 +36,46 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const removeFromCart = (sku: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.sku !== sku));
+  };
+
   const clearCart = () => {
     setCart([]);
   };
 
+  const updateQuantity = (sku: string, newQuantity: number) => {
+    console.log("cart provider", sku, newQuantity);
+    setCart((prevCart) => {
+      const targetItem = prevCart.find((item) => item.sku === sku);
+      if (!targetItem) return prevCart;
+
+      // If quantity reduced to 0 or less, remove item from cart
+      if (newQuantity <= 0) {
+        return prevCart.filter((item) => item.sku !== sku);
+      }
+
+      //cap at total available stock
+      const validQuantity = Math.min(newQuantity, targetItem.totalStock);
+
+      return prevCart.map((item) =>
+        item.sku === sku ? { ...item, quantity: validQuantity } : item,
+      );
+    });
+  };
+
   return (
     //  Now this matches CartContextType perfectly!
-    <CartContext.Provider value={{ cart, setCart, addToCart, clearCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

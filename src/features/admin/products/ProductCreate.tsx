@@ -6,37 +6,69 @@ import {
   ProductValidation,
   type ProductData,
 } from "../../../validations/productValidation";
-import { createProduct } from "../../../services/admin/product";
 import { ValidationError, SuccessMessage } from "../../../components/Message";
+import UploadImage from "./partial/UploadImage";
+import { createProduct } from "../../../services/admin/product";
 
 const ProductCreate = () => {
-  const {
-    formData,
-    setFormData,
-    errors,
-    handleChange,
-    handleSubmit,
-    setSuccess,
-    success,
-  } = useForm<ProductData>(
-    {
-      name: "",
-      description: "",
-      categoryId: "",
-      slug: "",
-      stockType: "stocked",
-      isActive: true,
-      sellPrice: 0,
-      lowStock: 0,
-    },
-    ProductValidation,
-  );
+  const { formData, setFormData, errors, handleChange, setSuccess, success } =
+    useForm<ProductData>(
+      {
+        name: "",
+        description: "",
+        categoryId: "",
+        slug: "",
+        stockType: "stocked",
+        isActive: true,
+        sellPrice: 0,
+        lowStock: 0,
+        image: undefined,
+      },
+      ProductValidation,
+    );
   const { categories, loading } = useGetCategories(true);
 
-  const submitForm = async (request) => {
+  // const submitForm = async (request) => {
+  //   try {
+  //     console.log("request", request.data);
+  //     const response = await createProduct(request.data);
+  //     if (response) {
+  //       setFormData({
+  //         name: "",
+  //         description: "",
+  //         categoryId: "",
+  //         slug: "",
+  //         stockType: "stocked",
+  //         isActive: true,
+  //         sellPrice: 0,
+  //         lowStock: 0,
+  //       });
+  //       setSuccess(true);
+  //     }
+  //   } catch (error: any) {
+  //     console.log("error", error);
+  //   }
+  // };
+
+  const submitForm = async (e) => {
     try {
-      console.log("request", request.data);
-      const response = await createProduct(request.data);
+      e.preventDefault();
+      const payload = new FormData();
+      payload.append("name", formData.name);
+      payload.append("description", formData.description ?? "");
+      payload.append("categoryId", formData.categoryId);
+      payload.append("slug", formData.slug);
+      payload.append("stockType", formData.stockType);
+      payload.append("sellPrice", String(formData.sellPrice));
+      payload.append("isActive", String(formData.isActive));
+      if (formData.lowStock !== undefined && formData.lowStock !== null) {
+        payload.append("lowStock", String(formData.lowStock));
+      }
+      if (formData.image) {
+        payload.append("image", formData.image);
+      }
+      const response = await createProduct(payload);
+      console.log(response);
       if (response) {
         setFormData({
           name: "",
@@ -47,12 +79,18 @@ const ProductCreate = () => {
           isActive: true,
           sellPrice: 0,
           lowStock: 0,
+          image: undefined,
         });
         setSuccess(true);
       }
-    } catch (error: any) {
-      console.log("error", error);
+    } catch (err) {
+      console.log(err);
+      //set Error
     }
+  };
+
+  const handleImageSelect = (file) => {
+    setFormData((prev) => ({ ...prev, image: file }));
   };
 
   if (loading) return <div>Loading...</div>;
@@ -72,15 +110,15 @@ const ProductCreate = () => {
 
           {/* Card Container - Matching rounded-3xl and shadows */}
           <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl shadow-slate-200/50">
-            <form
-              className="space-y-5"
-              onSubmit={(e) => handleSubmit(e, submitForm)}
-            >
+            <form className="space-y-5" onSubmit={(e) => submitForm(e)}>
               {success && (
                 <SuccessMessage onClose={() => setSuccess(false)}>
                   Product added successfully!
                 </SuccessMessage>
               )}
+
+              <UploadImage onFileSelect={handleImageSelect} />
+
               {/* Product Name */}
               <div className="space-y-1">
                 <label
@@ -137,7 +175,7 @@ const ProductCreate = () => {
                       onChange={handleChange}
                       value={formData.categoryId}
                     >
-                      <option value="" disabled selected>
+                      <option value="" disabled defaultValue={"others"}>
                         Select Category
                       </option>
                       {categories.map((category) => (
@@ -308,7 +346,7 @@ const ProductCreate = () => {
                   type="submit"
                   className="btn-primary w-2/3 py-4 shadow-lg shadow-cyan-100"
                 >
-                  Save Product
+                  Create Product
                 </button>
               </div>
             </form>
