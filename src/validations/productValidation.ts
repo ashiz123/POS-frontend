@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ProductValidation = z.object({
+const productBaseSchema = {
   name: z.string().min(3, "Name is too short"),
   description: z.string().optional(),
   slug: z.string().slugify().min(3, "Slug is too short"),
@@ -10,6 +10,11 @@ export const ProductValidation = z.object({
   sellPrice: z.coerce.number().min(1, "Sell price must be greater than 0"),
   isActive: z.boolean(),
   categoryId: z.string(),
-});
+};
 
-export type ProductData = z.infer<typeof ProductValidation>;
+export const CreateProductValidation = z.object(productBaseSchema);
+
+export const UpdateProductValidation = z.object(productBaseSchema).partial();
+
+export type CreateProductData = z.infer<typeof CreateProductValidation>;
+export type UpdateProductData = z.infer<typeof UpdateProductValidation>;

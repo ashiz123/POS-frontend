@@ -1,8 +1,18 @@
 import React, { useState, useRef } from "react";
+import { retrieveImageFromServer } from "../../../../utils/retrieveImageFromServer";
 
-export default function UploadImage({ onFileSelect }) {
+type UploadImageProps = {
+  onFileSelect: (file: File | null) => void;
+  formDataImage?: string | null;
+};
+
+export default function UploadImage({
+  onFileSelect,
+  formDataImage,
+}: UploadImageProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageSrc = retrieveImageFromServer(formDataImage);
 
   const defaultPlaceholder =
     "https://tecdn.b-cdn.net/img/new/standard/nature/184.jpg";
@@ -40,7 +50,7 @@ export default function UploadImage({ onFileSelect }) {
         {/* 2. Added fixed height (h-48) and relative positioning */}
         <div className="relative h-48 w-full bg-slate-100 flex items-center justify-center overflow-hidden">
           <img
-            src={imagePreview || defaultPlaceholder}
+            src={imagePreview || imageSrc || defaultPlaceholder}
             /* 3. CRITICAL FIX: max-h-full max-w-full object-contain keeps it strictly inside */
             className="max-h-full max-w-full object-contain p-2 rounded-t-lg mx-auto"
             alt="Product Preview"

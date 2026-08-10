@@ -1,19 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Master from "../../../components/Master";
 import { useGetCategories } from "../../../hooks/useGetCategories";
 import useForm from "../../../hooks/useForm";
 
 import { ValidationError, SuccessMessage } from "../../../components/Message";
 import UploadImage from "./partial/UploadImage";
-import { createProduct } from "../../../services/admin/product";
+import { updateProduct, getProductById } from "../../../services/admin/product";
 import {
-  CreateProductValidation,
-  type CreateProductData,
+  UpdateProductValidation,
+  type UpdateProductData,
 } from "../../../validations/productValidation";
+import { useEffect } from "react";
 
-const ProductCreate = () => {
+const ProductEdit = () => {
+  const { productId } = useParams();
   const { formData, setFormData, errors, handleChange, setSuccess, success } =
-    useForm<CreateProductData>(
+    useForm<UpdateProductData>(
       {
         name: "",
         description: "",
@@ -25,28 +27,72 @@ const ProductCreate = () => {
         lowStock: 0,
         image: undefined,
       },
-      CreateProductValidation,
+      UpdateProductValidation,
     );
   const { categories, loading } = useGetCategories(true);
+
+  useEffect(() => {
+    if (!productId) {
+      console.log("Product not found");
+      return;
+    }
+
+    const getProductDetails = async () => {
+      const products = await getProductById(productId);
+
+      if (products) {
+        try {
+          // 1. Fetch data from your API/function
+          const product = await getProductById(productId);
+
+          // 2. Pre-fill your form state so the inputs aren't blank
+          if (product) {
+            setFormData({
+              name: product.name || "",
+              description: product.description || "",
+              categoryId: product.categoryId?._id || product.categoryId || "",
+              slug: product.slug || "",
+              stockType: product.stockType || "stocked",
+              isActive: product.isActive ?? true,
+              sellPrice: product.sellPrice || 0,
+              lowStock: product.lowStock || 0,
+              image: product.imageUrl || undefined,
+            });
+          }
+        } catch (error) {
+          console.error("Failed to fetch product details:", error);
+        }
+      }
+    };
+
+    getProductDetails();
+  }, [productId, setFormData]);
 
   const submitForm = async (e) => {
     try {
       e.preventDefault();
+
       const payload = new FormData();
-      payload.append("name", formData.name);
+      payload.append("name", formData.name || "");
       payload.append("description", formData.description ?? "");
-      payload.append("categoryId", formData.categoryId);
-      payload.append("slug", formData.slug);
-      payload.append("stockType", formData.stockType);
-      payload.append("sellPrice", String(formData.sellPrice));
-      payload.append("isActive", String(formData.isActive));
+      payload.append("categoryId", formData.categoryId || "");
+      payload.append("slug", formData.slug || "");
+      payload.append("stockType", formData.stockType || "");
+      payload.append("sellPrice", String(formData.sellPrice ?? 0));
+      payload.append("isActive", String(formData.isActive ?? true));
       if (formData.lowStock !== undefined && formData.lowStock !== null) {
         payload.append("lowStock", String(formData.lowStock));
       }
       if (formData.image) {
         payload.append("image", formData.image);
       }
-      const response = await createProduct(payload);
+
+      if (!productId) {
+        console.log("Product not found to update");
+        return;
+      }
+
+      const response = await updateProduct(productId, formData);
       console.log(response);
       if (response) {
         setFormData({
@@ -72,6 +118,8 @@ const ProductCreate = () => {
     setFormData((prev) => ({ ...prev, image: file }));
   };
 
+  console.log("current form value", formData);
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -80,7 +128,7 @@ const ProductCreate = () => {
         <div className="max-w-4xl w-full">
           <div className="text-center mb-10">
             <h1 className="text-2xl font-black tracking-tight text-primary-600">
-              Add New Product
+              Edit Product
             </h1>
             <p className="text-slate-500 text-sm mt-2">
               Fill in the details to update your inventory
@@ -96,7 +144,10 @@ const ProductCreate = () => {
                 </SuccessMessage>
               )}
 
-              <UploadImage onFileSelect={handleImageSelect} />
+              <UploadImage
+                onFileSelect={handleImageSelect}
+                formDataImage={formData.image}
+              />
 
               {/* Product Name */}
               <div className="space-y-1">
@@ -113,7 +164,7 @@ const ProductCreate = () => {
                   placeholder="Product name"
                   className="input-field" // Using your global class
                   onChange={handleChange}
-                  value={formData.name}
+                  value={formData.name || ""}
                 />
                 {errors.name && (
                   <ValidationError> {errors.name}</ValidationError>
@@ -325,7 +376,7 @@ const ProductCreate = () => {
                   type="submit"
                   className="btn-primary w-2/3 py-4 shadow-lg shadow-cyan-100"
                 >
-                  Create Product
+                  Update Product
                 </button>
               </div>
             </form>
@@ -342,4 +393,4 @@ const ProductCreate = () => {
   );
 };
 
-export default ProductCreate;
+export default ProductEdit;

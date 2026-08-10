@@ -3,10 +3,11 @@ import Master from "../../../components/Master";
 import { useEffect, useState } from "react";
 import { productList } from "../../../services/admin/product";
 import type { ProductDisplayData } from "../../../validations/productListValidation";
+import { retrieveImageFromServer } from "../../../utils/retrieveImageFromServer";
 
 const ProductList = () => {
   const [products, setProducts] = useState<
-    (ProductDisplayData & { _id: string })[]
+    (ProductDisplayData & { _id: string; imageUrl: string })[]
   >([]);
 
   useEffect(() => {
@@ -22,8 +23,6 @@ const ProductList = () => {
 
     getAllProducts();
   }, []);
-
-  console.log("products", products);
 
   return (
     <Master>
@@ -75,6 +74,9 @@ const ProductList = () => {
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Image
+                  </th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Product Name
                   </th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -96,45 +98,61 @@ const ProductList = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
-                {products.map((product) => (
-                  <tr
-                    key={product._id}
-                    className="hover:bg-slate-50 transition"
-                  >
-                    <td className="px-6 py-4 font-medium">{product.name}</td>
-                    <td className="px-6 py-4 font-medium">{product.slug}</td>
-                    <td className="px-6 py-4 text-slate-500">
-                      {product.categoryId?.title}
-                    </td>
-                    <td className="px-6 py-4">{product.stockType}</td>
-                    <td className="px-6 py-4">
-                      {product.isActive ? (
-                        <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-bold">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="px-2 py-1 bg-emerald-100 text-red-700-700 rounded-md text-xs font-bold">
-                          Inactive
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link
-                        to={`/business/product/${product._id}/stock`}
-                        state={{ product }}
-                        className="text-primary-600 hover:text-primary-800 font-medium mr-3"
-                      >
-                        View
-                      </Link>
-                      <button className="text-blue-600 hover:text-primary-800 font-medium mr-3">
-                        Edit
-                      </button>
-                      <button className="text-red-500 hover:text-red-700 font-medium">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {products.map((product) => {
+                  const imageSrc = retrieveImageFromServer(product.imageUrl);
+                  return (
+                    <tr
+                      key={product._id}
+                      className="hover:bg-slate-50 transition"
+                    >
+                      <td className="px-6 py-4">
+                        <img
+                          src={
+                            imageSrc ||
+                            "https://placehold.co/100x100?text=No+Image"
+                          }
+                          alt={product.name}
+                          className="w-10 h-10 object-cover rounded-md border border-slate-200"
+                        />
+                      </td>
+                      <td className="px-6 py-4 font-medium">{product.name}</td>
+                      <td className="px-6 py-4 font-medium">{product.slug}</td>
+                      <td className="px-6 py-4 text-slate-500">
+                        {product.categoryId?.title}
+                      </td>
+                      <td className="px-6 py-4">{product.stockType}</td>
+                      <td className="px-6 py-4">
+                        {product.isActive ? (
+                          <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-bold">
+                            Active
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 bg-emerald-100 text-red-700-700 rounded-md text-xs font-bold">
+                            Inactive
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <Link
+                          to={`/business/product/${product._id}/stock`}
+                          state={{ product }}
+                          className="text-primary-600 hover:text-primary-800 font-medium mr-3"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          to={`/business/product/${product._id}/edit`}
+                          className="text-blue-600 hover:text-primary-800 font-medium mr-3"
+                        >
+                          Edit
+                        </Link>
+                        <button className="text-red-500 hover:text-red-700 font-medium">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

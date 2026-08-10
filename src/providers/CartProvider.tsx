@@ -45,7 +45,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateQuantity = (sku: string, newQuantity: number) => {
-    console.log("cart provider", sku, newQuantity);
     setCart((prevCart) => {
       const targetItem = prevCart.find((item) => item.sku === sku);
       if (!targetItem) return prevCart;
