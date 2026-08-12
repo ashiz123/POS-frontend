@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useGetCategories } from "../../../hooks/useGetCategories";
 import useForm from "../../../hooks/useForm";
@@ -6,10 +6,14 @@ import {
   categoryValidation,
   type CategoryData,
 } from "../../../validations/categoryValidation";
-import { createCategory } from "../../../services/admin/category";
+import {
+  getCategoryById,
+  updateCategory,
+} from "../../../services/admin/category";
 import Master from "../../../components/Master";
 import { SuccessMessage, ValidationError } from "../../../components/Message";
 import UploadImage from "../products/partial/UploadImage";
+import { useParams } from "react-router-dom";
 
 const initialCategoryForm = {
   title: "",
@@ -21,8 +25,9 @@ const initialCategoryForm = {
   position: "",
 };
 
-const CategoryCreate = () => {
+const CategoryEdit = () => {
   const [isMainCategory, setIsMainCategory] = useState(true);
+  const { categoryId } = useParams();
 
   const {
     formData,
@@ -38,13 +43,44 @@ const CategoryCreate = () => {
 
   const { categories, loading } = useGetCategories();
 
+  useEffect(() => {
+    if (!categoryId) {
+      console.log("Category not found");
+      return;
+    }
+
+    const getCatgoryDetails = async () => {
+      try {
+        const category = await getCategoryById(categoryId);
+
+        if (category) {
+          setFormData({
+            title: category.title || "",
+            description: category.description || "",
+            parentCategoryId: category.parentCategoryId || "",
+            slug: category.slug || "",
+            isActive: category.isActive ?? true,
+            position: String(category.position || ""),
+            imageUrl: category.imageUrl || undefined,
+          });
+
+          if (category.parentCategoryId) {
+            setIsMainCategory(false);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch product details:", error);
+      }
+    };
+
+    getCatgoryDetails();
+  }, [categoryId, setFormData]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // const handleImageSelect = (file) => {
-  //   setFormData((prev) => ({ ...prev, image: file }));
-  // };
+  console.log("is main category", isMainCategory);
 
   const formSubmit = async () => {
     if (isMainCategory === false && formData.parentCategoryId === "") {
@@ -54,25 +90,37 @@ const CategoryCreate = () => {
       }));
       return;
     }
-    const payload = new FormData();
-    payload.append("title", formData.title);
-    payload.append("description", formData.description ?? "");
-    if (formData.parentCategoryId) {
-      payload.append("parentCategoryId", String(formData.parentCategoryId));
-    }
-    payload.append("slug", formData.slug);
-    payload.append("isActive", String(formData.isActive));
-    payload.append("position", String(formData.position));
-    if (formData.image) {
-      payload.append("image", formData.image);
-    }
-    const result = await createCategory(payload);
-    if (result) {
-      console.log("Category added successful!", result);
-      setFormData(initialCategoryForm);
-      setSuccess(true);
-    } else {
-      console.log("Category creation failed.");
+
+    try {
+      const payload = new FormData();
+      payload.append("title", formData.title || "");
+      payload.append("description", formData.description ?? "");
+      payload.append("position", String(formData.position ?? ""));
+      payload.append("slug", formData.slug || "");
+      payload.append("isActive", String(formData.isActive ?? true));
+      if (formData.image) {
+        payload.append("image", formData.image);
+      }
+
+      if (formData.parentCategoryId) {
+        payload.append(
+          "parentCategoryId",
+          String(formData.parentCategoryId) || "",
+        );
+      }
+
+      console.log("payload", typeof formData.isActive);
+
+      const response = await updateCategory(categoryId, payload);
+
+      if (response) {
+        setFormData(initialCategoryForm);
+        setSuccess(true);
+      } else {
+        throw "Error to update category";
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -81,11 +129,8 @@ const CategoryCreate = () => {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-2xl font-black tracking-tight text-primary-600">
-            Add New Category
+            Edit Category
           </h1>
-          <p className="text-slate-500 text-sm mt-2">
-            Add product classification
-          </p>
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -96,11 +141,14 @@ const CategoryCreate = () => {
             >
               {success && (
                 <SuccessMessage onClose={() => setSuccess(false)}>
-                  Category added successfully!
+                  Category updated successfully!
                 </SuccessMessage>
               )}
 
-              <UploadImage onFileSelect={handleImageSelect} />
+              <UploadImage
+                onFileSelect={handleImageSelect}
+                formDataImage={formData.imageUrl}
+              />
 
               <div className="space-y-6">
                 {/* 1. Category Name */}
@@ -260,7 +308,7 @@ const CategoryCreate = () => {
                   title="Create Category"
                   className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition active:scale-[0.98]"
                 >
-                  Create Category
+                  Update Category
                 </button>
                 <button
                   type="button"
@@ -278,4 +326,4 @@ const CategoryCreate = () => {
   );
 };
 
-export default CategoryCreate;
+export default CategoryEdit;

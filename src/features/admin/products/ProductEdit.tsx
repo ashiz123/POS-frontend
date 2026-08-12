@@ -38,30 +38,24 @@ const ProductEdit = () => {
     }
 
     const getProductDetails = async () => {
-      const products = await getProductById(productId);
+      try {
+        const product = await getProductById(productId);
 
-      if (products) {
-        try {
-          // 1. Fetch data from your API/function
-          const product = await getProductById(productId);
-
-          // 2. Pre-fill your form state so the inputs aren't blank
-          if (product) {
-            setFormData({
-              name: product.name || "",
-              description: product.description || "",
-              categoryId: product.categoryId?._id || product.categoryId || "",
-              slug: product.slug || "",
-              stockType: product.stockType || "stocked",
-              isActive: product.isActive ?? true,
-              sellPrice: product.sellPrice || 0,
-              lowStock: product.lowStock || 0,
-              image: product.imageUrl || undefined,
-            });
-          }
-        } catch (error) {
-          console.error("Failed to fetch product details:", error);
+        if (product) {
+          setFormData({
+            name: product.name || "",
+            description: product.description || "",
+            categoryId: product.categoryId?._id || product.categoryId || "",
+            slug: product.slug || "",
+            stockType: product.stockType || "stocked",
+            isActive: product.isActive ?? true,
+            sellPrice: product.sellPrice || 0,
+            lowStock: product.lowStock || 0,
+            image: product.imageUrl || undefined,
+          });
         }
+      } catch (error) {
+        console.error("Failed to fetch product details:", error);
       }
     };
 
@@ -140,7 +134,7 @@ const ProductEdit = () => {
             <form className="space-y-5" onSubmit={(e) => submitForm(e)}>
               {success && (
                 <SuccessMessage onClose={() => setSuccess(false)}>
-                  Product added successfully!
+                  Product Updated successfully!
                 </SuccessMessage>
               )}
 

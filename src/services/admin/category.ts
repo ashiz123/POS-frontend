@@ -57,3 +57,14 @@ export const updateCategory = async (id, categoryData) => {
     console.log(error);
   }
 };
+
+export const getCategoryById = async (categoryId) => {
+  try {
+    const response = await apiAdminInstance.get(
+      `/categories/show/${categoryId}`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Master from "../../../components/Master";
 import { deleteCategoryApi } from "../../../services/admin/category";
 import { useGetCategories } from "../../../hooks/useGetCategories";
+import { retrieveImageFromServer } from "../../../utils/retrieveImageFromServer";
 
 const CategoryList = () => {
   const { categories, setCategories, loading } = useGetCategories(true);
@@ -80,6 +81,9 @@ const CategoryList = () => {
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Image
+                  </th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     Category Name
                   </th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -105,45 +109,63 @@ const CategoryList = () => {
               </thead>
               <tbody className="divide-y divide-slate-200 text-sm">
                 {/* <!-- Row 1 --> */}
-                {categories.map((category) => (
-                  <tr
-                    key={category._id}
-                    className="hover:bg-slate-50 transition"
-                  >
-                    <td className="px-6 py-4 font-medium">{category.title}</td>
-                    <td className="px-6 py-4 text-slate-500">
-                      {category.slug}
-                    </td>
-                    <td className="px-6 py-4">{category.description}</td>
-                    <td className="px-6 py-4">
-                      {category.isActive ? "Active" : "Inactive"}
-                    </td>
-                    <td className="px-6 py-4">{category.position}</td>
-                    <td className="px-6 py-4">
-                      {category.parentCategoryId &&
-                      typeof category.parentCategoryId === "object" ? (
-                        <span className="font-medium text-primary-600">
-                          {category.parentCategoryId.title}
-                        </span>
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="text-primary-600 hover:text-primary-800 font-medium mr-3">
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 font-medium"
-                        onClick={() =>
-                          deleteCategory(category._id, category.title)
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {categories.map((category) => {
+                  const imageSrc = retrieveImageFromServer(category.imageUrl);
+                  return (
+                    <tr
+                      key={category._id}
+                      className="hover:bg-slate-50 transition"
+                    >
+                      <td className="px-6 py-4">
+                        <img
+                          src={
+                            imageSrc ||
+                            "https://placehold.co/100x100?text=No+Image"
+                          }
+                          alt={category.title}
+                          className="w-10 h-10 object-cover rounded-md border border-slate-200"
+                        />
+                      </td>
+                      <td className="px-6 py-4 font-medium">
+                        {category.title}
+                      </td>
+                      <td className="px-6 py-4 text-slate-500">
+                        {category.slug}
+                      </td>
+                      <td className="px-6 py-4">{category.description}</td>
+                      <td className="px-6 py-4">
+                        {category.isActive ? "Active" : "Inactive"}
+                      </td>
+                      <td className="px-6 py-4">{category.position}</td>
+                      <td className="px-6 py-4">
+                        {category.parentCategoryId &&
+                        typeof category.parentCategoryId === "object" ? (
+                          <span className="font-medium text-primary-600">
+                            {category.parentCategoryId.title}
+                          </span>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <Link
+                          to={`/business/category/${category._id}/edit`}
+                          className="text-blue-600 hover:text-primary-800 font-medium mr-3"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          className="text-red-500 hover:text-red-700 font-medium"
+                          onClick={() =>
+                            deleteCategory(category._id, category.title)
+                          }
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

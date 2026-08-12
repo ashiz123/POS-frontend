@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { retrieveImageFromServer } from "../../../../utils/retrieveImageFromServer";
+import type { File } from "buffer";
 
 type UploadImageProps = {
   onFileSelect: (file: File | null) => void;

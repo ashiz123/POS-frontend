@@ -19,6 +19,7 @@ import RegisterUser from "../features/admin/auth/RegisterUser";
 import LoginUser from "../features/admin/auth/loginUser";
 import Transactions from "../features/admin/payment/Transactions";
 import ProductEdit from "../features/admin/products/ProductEdit";
+import CategoryEdit from "../features/admin/category/CategoryEdit";
 
 const BusinessRoutes = () => {
   return (
@@ -47,6 +48,7 @@ const BusinessRoutes = () => {
           {/* category paths resolve to: /category/list etc. */}
           <Route path="/category/list" element={<CategoryList />} />
           <Route path="/category/create" element={<CategoryCreate />} />
+          <Route path="/category/:categoryId/edit" element={<CategoryEdit />} />
 
           {/* orders path resolves to: /orders */}
           <Route path="/orders" element={<OrderList />} />

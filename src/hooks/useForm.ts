@@ -17,8 +17,10 @@ const useForm = <T>(initalFormData, validation) => {
       ...prev,
       [name]: newValue,
     }));
+  };
 
-    console.log(newValue);
+  const handleImageSelect = (file) => {
+    setFormData((prev) => ({ ...prev, image: file }));
   };
 
   const handleSubmit = async (e, callback) => {
@@ -31,6 +33,7 @@ const useForm = <T>(initalFormData, validation) => {
         newErrors[err.path[0]] = err.message;
       });
       setErrors(newErrors);
+      console.log(newErrors);
       return;
     } else {
       setErrors({});
@@ -48,6 +51,7 @@ const useForm = <T>(initalFormData, validation) => {
     setSuccess,
     loading,
     setLoading,
+    handleImageSelect,
     handleChange,
     handleSubmit,
   };
