@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { retrieveImageFromServer } from "../../../../utils/retrieveImageFromServer";
 import type { File } from "buffer";
 

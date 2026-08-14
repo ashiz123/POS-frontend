@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  getKioskUserSession,
-  logoutTerminal,
-} from "../../../services/kiosk/kiosk";
+import { useNavigate } from "react-router-dom";
+import { logoutTerminal } from "../../../services/kiosk/kiosk";
 import { useKioskUser } from "../../../hooks/useKioskAuth";
 import { ConfirmationDialog } from "../../../components/ConfirmationDialog";
 
@@ -11,7 +8,7 @@ const KioskHeader = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const { setUser } = useKioskUser();
   const navigate = useNavigate();
-  const [isConfirming, setIsConfirming] = useState<boolean>(false);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const logOffTerminal = async () => {
@@ -28,9 +25,13 @@ const KioskHeader = () => {
       }
     } catch (error) {
       console.log(error);
-      setErrorMessage("Error: Terminal cannot be properly shut");
+      setErrorMessage("Error: Problem to shut the terminal");
     }
   };
+
+  if (errorMessage) {
+    <div>{errorMessage}</div>;
+  }
 
   return (
     <header className="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm z-10">

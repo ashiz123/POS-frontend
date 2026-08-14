@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductValidation } from "./productValidation";
+import { CreateProductValidation } from "./productValidation";
 
 const populatedCategorySchema = z.object({
   _id: z.string(),
@@ -9,7 +9,7 @@ const populatedCategorySchema = z.object({
   isActive: z.boolean(),
 });
 
-export const ProductDisplayValidation = ProductValidation.extend({
+export const ProductDisplayValidation = CreateProductValidation.extend({
   categoryId: populatedCategorySchema,
 });
 

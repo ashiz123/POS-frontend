@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import {
-  Mail,
-  KeyRound,
-  AlertCircle,
-  CheckCircle2,
-  ArrowLeft,
-  Loader2,
-} from "lucide-react";
+import { Mail, KeyRound, CheckCircle2, ArrowLeft, Loader2 } from "lucide-react";
 
 import { forgetPassword } from "../../../services/admin/user";
 import Logo from "../../../components/Logo";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Lock,
   KeyRound,
@@ -6,7 +6,6 @@ import {
   EyeOff,
   AlertCircle,
   CheckCircle2,
-  ShieldCheck,
   ArrowLeft,
   Home,
 } from "lucide-react";
