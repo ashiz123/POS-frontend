@@ -1,4 +1,3 @@
-import React from "react";
 import { AlertTriangle, X, Check, Trash2 } from "lucide-react";
 
 /**

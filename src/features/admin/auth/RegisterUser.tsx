@@ -7,7 +7,7 @@ import { ValidationError } from "../../../components/Message";
 import Logo from "../../../components/Logo";
 import axios from "axios";
 import { useState } from "react";
-import { AlertCircle } from "lucide-react";
+
 import ErrorAlert from "../../../components/ErrorAlert";
 
 const RegisterUser = () => {
