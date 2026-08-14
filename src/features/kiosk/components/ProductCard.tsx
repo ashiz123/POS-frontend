@@ -1,9 +1,12 @@
 const ProductCard = ({ product, onAddToCart }) => {
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
   const productDataForCart = {
     productId: product._id,
     name: product.name,
     sku: product.sku,
     quantity: 1,
+    imageUrl: product.imageUrl,
     price: product.sellPrice,
     totalStock: product.totalStock,
   };
@@ -20,7 +23,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       <div>
         <div className="aspect-square bg-slate-100 rounded-xl mb-4 overflow-hidden">
           <img
-            src={product.image}
+            src={`${SERVER_URL}${product.imageUrl}`}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />

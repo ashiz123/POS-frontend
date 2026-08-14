@@ -3,6 +3,7 @@ import apiKioskInstance from "./apiKiosk";
 export const getAllCategories = async () => {
   try {
     const newKiosk = await apiKioskInstance.get("/kiosk/categories");
+    console.log(newKiosk.data);
     return newKiosk.data;
   } catch (error) {
     console.log(error);

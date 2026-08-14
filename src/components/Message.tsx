@@ -4,7 +4,7 @@ export const ValidationError = ({ children }) => {
 
 export const SuccessMessage = ({ children, onClose }) => {
   return (
-    <div className="flex items-center justify-between gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300">
+    <div className="flex items-center justify-between gap-3 p-4 m-5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300">
       <div className="flex items-center gap-3">
         {/* Success Icon */}
         <svg
@@ -56,4 +56,8 @@ export const InfoMessage = ({ children }) => {
 
 export const WarningMessage = ({ children }) => {
   return <span className="warning-text">{children}</span>;
+};
+
+export const ErrorMessage = ({ children }) => {
+  return <span className="error-message">{children}</span>;
 };

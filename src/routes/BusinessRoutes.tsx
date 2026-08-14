@@ -17,6 +17,9 @@ import Stocks from "../features/admin/products/Stock";
 import { PublicRoute } from "../features/admin/auth/PublicRoute";
 import RegisterUser from "../features/admin/auth/RegisterUser";
 import LoginUser from "../features/admin/auth/loginUser";
+import Transactions from "../features/admin/payment/Transactions";
+import ProductEdit from "../features/admin/products/ProductEdit";
+import CategoryEdit from "../features/admin/category/CategoryEdit";
 
 const BusinessRoutes = () => {
   return (
@@ -39,14 +42,19 @@ const BusinessRoutes = () => {
           {/* product paths resolve to: /product/list etc. */}
           <Route path="/product/list" element={<ProductList />} />
           <Route path="/product/create" element={<ProductCreate />} />
+          <Route path="/product/:productId/edit" element={<ProductEdit />} />
           <Route path="/product/:productId/stock" element={<Stocks />} />
 
           {/* category paths resolve to: /category/list etc. */}
           <Route path="/category/list" element={<CategoryList />} />
           <Route path="/category/create" element={<CategoryCreate />} />
+          <Route path="/category/:categoryId/edit" element={<CategoryEdit />} />
 
           {/* orders path resolves to: /orders */}
           <Route path="/orders" element={<OrderList />} />
+
+          {/* orders path resolves to: /orders */}
+          <Route path="/payment/transactions" element={<Transactions />} />
 
           {/* employee path resolves to: /employee/create */}
           <Route path="/employee/create" element={<EmployeeCreate />} />

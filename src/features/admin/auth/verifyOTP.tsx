@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { loginWithOtp } from "../../../services/admin/user";
+import { verifyOtp } from "../../../services/admin/user";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
@@ -63,7 +63,7 @@ const VerifyOTP = () => {
     const finalOtp = otp.join("");
     if (finalOtp.length === 6) {
       console.log("Verifying OTP:", finalOtp);
-      const loggedInUser = await loginWithOtp(finalOtp);
+      const loggedInUser = await verifyOtp(finalOtp);
       setUser(loggedInUser.userData);
       console.log("User logged in:", loggedInUser);
       navigate("/business/select");

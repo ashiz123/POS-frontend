@@ -14,23 +14,23 @@ export default function PrintReceiptPage({ orderId = "105" }) {
   useEffect(() => {
     // 1. Automatically open the print dialog the second this page loads
     // We wrap it in a tiny timeout to ensure the DOM has fully painted first
-    const printTimeout = setTimeout(() => {
-      window.print();
-    }, 500);
+    // const printTimeout = setTimeout(() => {
+    //   window.print();
+    // }, 5000);
 
     // 2. The Magic Event Listener: Detect when the print dialog closes
     const handleAfterPrint = () => {
       clearCart(); // Safely wipe the cart now that printing is done
-      navigate("/kiosk/main"); // Instantly send the next customer to the start screen
+      navigate("/customer/kiosk/main"); // Instantly send the next customer to the start screen
     };
 
     // The 'afterprint' event fires whether they click "Print" OR "Cancel"!
     window.addEventListener("afterprint", handleAfterPrint);
 
-    return () => {
-      clearTimeout(printTimeout);
-      window.removeEventListener("afterprint", handleAfterPrint);
-    };
+    // return () => {
+    //   clearTimeout(printTimeout);
+    //   window.removeEventListener("afterprint", handleAfterPrint);
+    // };
   }, [navigate, clearCart]);
 
   return (
@@ -39,7 +39,7 @@ export default function PrintReceiptPage({ orderId = "105" }) {
       {/* This alert is ONLY visible on the screen, not on the paper!
         'print:hidden' is a Tailwind lifesaver here. 
       */}
-      <div className="print:hidden bg-blue-50 text-blue-800 p-4 rounded-xl mb-8 text-center font-sans">
+      <div className="print:hidden bg-blue-50 text-primary-800 p-4 rounded-xl mb-8 text-center font-sans">
         <p className="font-bold text-lg">Opening Print Dialog...</p>
         <p className="text-sm mt-2">
           If it doesn't open automatically, click the button below.
@@ -47,7 +47,7 @@ export default function PrintReceiptPage({ orderId = "105" }) {
 
         <button
           onClick={() => window.print()}
-          className="mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg font-bold w-full"
+          className="mt-4 bg-primary-600 text-white px-6 py-3 rounded-lg font-bold w-full"
         >
           Print Now
         </button>
@@ -55,7 +55,7 @@ export default function PrintReceiptPage({ orderId = "105" }) {
         <button
           onClick={() => {
             clearCart();
-            navigate("/kiosk/main");
+            navigate("/customer/kiosk/main");
           }}
           className="mt-2 text-slate-500 underline py-2 text-sm w-full"
         >

@@ -12,14 +12,20 @@ const KioskLogin = () => {
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
-  const { formData, setFormData, setErrors, handleChange, handleSubmit } =
-    useForm<LoginData>(
-      {
-        email: "",
-        password: "",
-      },
-      loginValidation,
-    );
+  const {
+    formData,
+    setFormData,
+    setErrors,
+    errors,
+    handleChange,
+    handleSubmit,
+  } = useForm<LoginData>(
+    {
+      email: "",
+      password: "",
+    },
+    loginValidation,
+  );
 
   const { terminal } = useKioskDevice();
   const navigate = useNavigate();
@@ -37,8 +43,11 @@ const KioskLogin = () => {
         setStatus("error");
         setErrors({ root: "Invalid user data received" });
       }
-    } catch (err) {
-      setStatus("error");
+    } catch (err: any) {
+      if (err.response.data.state === "session_active") {
+        setErrors({ root: err.response.data.message });
+      }
+
       console.log(err);
     }
   };
@@ -55,6 +64,14 @@ const KioskLogin = () => {
                 {terminal.name}
               </h3>
             )}
+
+            {errors.root && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 rounded-r-md">
+                <p className="font-bold">Authentication Error</p>
+                <p className="text-sm">{errors.root}</p>
+              </div>
+            )}
+
             <h1 className="text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
               Staff Sign In
             </h1>

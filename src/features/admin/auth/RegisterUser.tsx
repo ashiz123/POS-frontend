@@ -5,8 +5,13 @@ import { registerUser } from "../../../services/admin/user";
 import { type RegisterData } from "../../../validations/registerValidations";
 import { ValidationError } from "../../../components/Message";
 import Logo from "../../../components/Logo";
+import axios from "axios";
+import { useState } from "react";
+import { AlertCircle } from "lucide-react";
+import ErrorAlert from "../../../components/ErrorAlert";
 
 const RegisterUser = () => {
+  const [localErrors, setLocalErrors] = useState<string | null>();
   const { formData, setFormData, errors, handleChange, handleSubmit } =
     useForm<RegisterData>(
       {
@@ -20,19 +25,35 @@ const RegisterUser = () => {
   const navigate = useNavigate();
 
   const formSubmit = async (request) => {
-    const result = await registerUser(request.data);
+    try {
+      const result = await registerUser(request.data);
 
-    if (result) {
-      console.log("Registration successful!", result);
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        password: "",
-      });
-      navigate("/business/login");
-    } else {
-      console.log("Registration failed.");
+      if (result) {
+        console.log("Registration successful!", result);
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          password: "",
+        });
+        navigate("/business/login");
+      } else {
+        console.log("Registration failed.");
+      }
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.data?.code === "DUPLICATE_ENTRY") {
+          setLocalErrors(err.response?.data?.error || "User already exists");
+        } else {
+          setLocalErrors(
+            err.response?.data?.message || "Server error occurred",
+          );
+        }
+      } else if (err instanceof Error) {
+        setLocalErrors(err.message);
+      } else {
+        setLocalErrors("Unknown error");
+      }
     }
   };
 
@@ -56,6 +77,8 @@ const RegisterUser = () => {
             className="space-y-5"
             onSubmit={(e) => handleSubmit(e, formSubmit)}
           >
+            {localErrors && <ErrorAlert> {localErrors}</ErrorAlert>}
+
             <div className="grid ">
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">

@@ -7,6 +7,7 @@ import useForm from "../../../hooks/useForm";
 import { loginUser } from "../../../services/admin/user";
 import { useEffect } from "react";
 import Logo from "../../../components/Logo";
+import { UserPlus } from "lucide-react";
 
 const LoginUser = () => {
   const {
@@ -129,18 +130,30 @@ const LoginUser = () => {
               >
                 LOGIN
               </button>
-
-              {/* Registration Footer */}
-              <div className="text-center text-sm text-slate-600 mt-4">
-                Don't have an account?{" "}
-                <Link
-                  to="/business/user/register"
-                  className="text-cyan-600 font-semibold hover:underline"
-                >
-                  Register now
-                </Link>
-              </div>
             </form>
+
+            <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+              <span>Forgot your password?</span>
+              <Link
+                to={"/forget-password"}
+                className="inline-flex items-center gap-1 font-semibold text-cyan-600 hover:text-cyan-700 hover:underline transition"
+              >
+                <UserPlus className="w-3 h-3" />
+                <span>Click me</span>
+              </Link>
+            </div>
+
+            {/* Registration Footer */}
+            <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+              <span>Don't have an account?</span>
+              <Link
+                to={"/business/user/register"}
+                className="inline-flex items-center gap-1 font-semibold text-cyan-600 hover:text-cyan-700 hover:underline transition"
+              >
+                <UserPlus className="w-3 h-3" />
+                <span>Register now</span>
+              </Link>
+            </div>
           </div>
 
           {/* {location.pathname === "/" ? (

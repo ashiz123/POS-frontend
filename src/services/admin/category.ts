@@ -5,6 +5,11 @@ export const createCategory = async (categoryData) => {
     const response = await apiAdminInstance.post(
       "/categories/create",
       categoryData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
     );
     return response.data;
   } catch (error) {
@@ -48,6 +53,17 @@ export const updateCategory = async (id, categoryData) => {
       categoryData,
     );
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCategoryById = async (categoryId) => {
+  try {
+    const response = await apiAdminInstance.get(
+      `/categories/show/${categoryId}`,
+    );
+    return response.data.data;
   } catch (error) {
     console.log(error);
   }

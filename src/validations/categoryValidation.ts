@@ -10,7 +10,9 @@ export const categoryValidation = z.object({
   description: z.string().optional(),
   slug: z.string().slugify().min(3, "Slug is too short"),
   position: z.string().min(1, "Position must be greater than 0"),
-  isActive: z.boolean().optional(),
+  isActive: z.preprocess((val) => val === "true" || val === true, z.boolean()),
+  image: z.file().optional(),
+  imageUrl: z.string().optional(), //to retrieve image in frontend
   parentCategoryId: z
     .union([z.string(), PopulatedParentSchema])
     .nullable() // handles null or undefined

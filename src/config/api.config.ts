@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 const MODE = import.meta.env.MODE;
 
-if (MODE === "develoopment") {
+if (MODE === "development") {
   console.log("api url", API_URL);
 }
 

@@ -61,9 +61,11 @@ const Demo = () => {
         </div>
         <div className="relative aspect-video w-full bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden shadow-2xl shadow-slate-200">
           <iframe
-            className="w-full h-full absolute inset-0"
-            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-            title="POS Demo Video"
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/dRK_gmiB_pA?si=ePxONh-cxPeP88wE"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
         </div>
